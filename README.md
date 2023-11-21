@@ -2,6 +2,9 @@
 
 WIP, but very much usable.
 
+<a href="https://postimg.cc/JGc10Sbh" target="_blank"><img src="https://i.postimg.cc/JGc10Sbh/nvim-1.png" alt="nvim-1"/></a> <a href="https://postimg.cc/WDtj93xD" target="_blank"><img src="https://i.postimg.cc/WDtj93xD/nvim-2.png" alt="nvim-2"/></a> <a href="https://postimg.cc/bGMP4Pjm" target="_blank"><img src="https://i.postimg.cc/bGMP4Pjm/nvim-4.png" alt="nvim-4"/></a><br/><br/>
+<a href="https://postimg.cc/2LdfqBLt" target="_blank"><img src="https://i.postimg.cc/2LdfqBLt/nvim-5.png" alt="nvim-5"/></a> <a href="https://postimg.cc/v40bL92F" target="_blank"><img src="https://i.postimg.cc/Bt237R7C/nvim-7.png" alt="nvim-7"/></a> <a href="https://postimg.cc/BLK30zS4" target="_blank"><img src="https://i.postimg.cc/BLK30zS4/nvim-8.png" alt="nvim-8"/> </a> 
+
 ## Prerequisities ##
 
 * [neovim](https://github.com/neovim/neovim) - obviously
