@@ -1,0 +1,5 @@
+.undo
+.vim
+.clj-kondo
+.lsp
+lazy-lock.json
