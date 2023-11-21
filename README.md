@@ -1,4 +1,4 @@
-### Clojure neovim config written in fennel that bleeds awesomeness ###
+# Clojure neovim config written in fennel that bleeds awesomeness #
 
 WIP, but very much usable.
 
@@ -37,11 +37,12 @@ Are currently broken because of some issues with `cmp`. Low priority currently s
 
 It's all configurable, this is how I like it. Defaults are used for everythng else and can be easily found by a help tag telescope search - `<C-h>`.
 
-Check docs and default mappings for
+Check docs and default mappings online or via help tags for
 
 * [surround](https://github.com/tpope/vim-surround)
 * [comments](https://github.com/numToStr/Comment.nvim)
-* [targetrs](https://github.com/numToStr/Comment.nvim)
+* [targets](https://github.com/wellle/targets.vim)
+* [conjure](https://github.com/Olical/conjure)
 
 if you're not familiar with them. These plugins are extremely handy.
 
