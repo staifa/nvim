@@ -2,4 +2,4 @@
   :lazy false
   :opts {:enable true
          :write_all_buffers true
-         :events [:BufLeave :BufHidden :BufWinLeave :CmdlineEnter]}}]
+         :events [:BufLeave :BufWinLeave :CmdlineEnter]}}]

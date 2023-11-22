@@ -39,7 +39,8 @@ All this and much more can be found in the [clojure-lsp docs](https://clojure-ls
 
 ## Snippets ##
 
-It's possible to add snipets to the `clojure-lsp` config. They are then prioritized in the autocomplete.
+`clojure-lsp` provides some handy [snippets](https://clojure-lsp.io/features/#snippets) out of the box.
+To add custom snipets, edit the `clojure-lsp` config.
 
 ```edn
 ;; ~/.config/clojure-lsp/config.edn
