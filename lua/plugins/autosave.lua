@@ -1,2 +1,2 @@
 -- [nfnl] Compiled from fnl/plugins/autosave.fnl by https://github.com/Olical/nfnl, do not edit.
-return {{"okuuva/auto-save.nvim", cmd = "ASToggle"}}
+return {{"0x00-ketsu/autosave.nvim", opts = {enable = true, write_all_buffers = true, events = {"BufLeave", "BufHidden", "BufWinLeave", "CmdlineEnter"}}, lazy = false}}
