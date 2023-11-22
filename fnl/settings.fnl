@@ -22,9 +22,7 @@
        :undodir (.. (vim.fn.stdpath "config") "/.undo")
        :undofile true
        ; hide cmd line
-       ; :cmdheight 0
-       ; settings needed for compe autocompletion
-       :completeopt "menuone,noselect"
+       :cmdheight 0
        ; start scrolling when you're 15 away from bottom (and side)
        :scrolloff 15
        :sidescrolloff 35

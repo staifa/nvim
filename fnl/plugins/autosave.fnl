@@ -1,2 +1,2 @@
-[{1 :Pocco81/auto-save.nvim
-  :lazy false}]
+[{1 :okuuva/auto-save.nvim
+  :cmd :ASToggle}]
