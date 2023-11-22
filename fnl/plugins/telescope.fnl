@@ -25,7 +25,7 @@
 
 (fn setup-keys []
   (let [mappings {:f :find_files
-                  :j :live_grep
+                  :w :live_grep
                   :b :buffers
                   :h :help_tags
                   :s :resume}
@@ -33,6 +33,15 @@
         to #(.. "<cmd>lua require'telescope.builtin'." $1 "()<CR>")]
     (icollect [key cmd (pairs mappings)]
       [(from key) (to cmd)])))
+
+(vim.api.nvim_create_autocmd
+  "User"
+  {:pattern :TelescopePreviewerLoaded
+   :callback (fn [args]
+               (when (= :help args.data.filetype)
+                 ;; workaround for help preview aligning right on long lines
+                 (let [key (vim.api.nvim_replace_termcodes :<C-f> false false true)]
+                   (vim.api.nvim_feedkeys key :t {}))))})
 
 [{1 :nvim-telescope/telescope.nvim
   :dependencies [:nvim-telescope/telescope-ui-select.nvim
