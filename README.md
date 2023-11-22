@@ -39,7 +39,15 @@ All this and much more can be found in the [clojure-lsp docs](https://clojure-ls
 
 ## Snippets ##
 
-Are currently broken because of some issues with `cmp`. Low priority currently since I almost don't use them wih Clojure.
+It's possible to add snipets to the `clojure-lsp` config. They are then prioritized in the autocomplete.
+
+```edn
+;; ~/.config/clojure-lsp/config.edn
+{:cljfmt-config-path "~/.config/nvim/.cljfmt.edn"
+ :additional-snippets [{:name "pp"
+                        :detail "Insert clojure pretty print"
+                        :snippet "(clojure.pprint/pprint $0)"}]}
+```
 
 ## Key bindings ##
 
