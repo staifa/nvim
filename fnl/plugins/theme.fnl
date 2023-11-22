@@ -1,5 +1,4 @@
-(fn setup
-  []
+(fn setup []
   (let [theme (require :gruvbox)]
     (theme.setup {:undercurl true
                   :underline true

@@ -26,7 +26,7 @@ local function mappings(cmp, luasnip)
       return fallback()
     end
   end
-  return {["<C-p>"] = cmp.mapping.select_prev_item(), ["<C-n>"] = cmp.mapping.select_next_item(), ["<C-u>"] = cmp.mapping.scroll_docs(( - 4)), ["<C-d>"] = cmp.mapping.scroll_docs(4), ["<C-Space>"] = cmp.mapping.complete(), ["<C-e>"] = cmp.mapping.close(), ["<CR>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}), ["<Tab>"] = cmp.mapping(_1_, {"i", "s"}), ["<S-Tab>"] = cmp.mapping(_3_, {"i", "s"})}
+  return {["<C-p>"] = cmp.mapping.select_prev_item(), ["<C-n>"] = cmp.mapping.select_next_item(), ["<C-u>"] = cmp.mapping.scroll_docs(( - 4)), ["<C-d>"] = cmp.mapping.scroll_docs(4), ["<C-Space>"] = cmp.mapping.complete(), ["<C-x>"] = cmp.mapping.close(), ["<CR>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}), ["<Tab>"] = cmp.mapping(_1_, {"i", "s"}), ["<S-Tab>"] = cmp.mapping(_3_, {"i", "s"})}
 end
 local function setup()
   local cmp = require("cmp")

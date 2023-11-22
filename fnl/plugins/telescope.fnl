@@ -1,5 +1,4 @@
-(fn setup
-  []
+(fn setup []
   (let [telescope (require :telescope)
         themes (require :telescope.themes)
         actions (require :telescope.actions)]
@@ -24,8 +23,7 @@
     (telescope.load_extension :ui-select)
     (telescope.load_extension :lazygit)))
 
-(fn setup-keys
-  []
+(fn setup-keys []
   (let [mappings {:f :find_files
                   :j :live_grep
                   :b :buffers

@@ -38,6 +38,8 @@ local function setup()
     return nil
   end
   before_init = _5_
+  lsp.lua_ls.setup({settings = {Lua = {diagnostics = {globals = {"vim"}}}}})
+  lsp.fennel_language_server.setup({filetypes = {"fennel"}, root_dir = lsp.util.root_pattern("fnl", "lua"), single_file_support = true, settings = {fennel = {diagnostics = {globals = {"vim", "jit", "comment"}}, workspace = {library = vim.api.nvim_list_runtime_paths()}}}})
   return lsp.clojure_lsp.setup({on_attach = on_attach_fn, handlers = handlers, before_init = before_init, capabilities = capabilities})
 end
 vim.diagnostic.config({virtual_text = true, severity_sort = true, float = {header = "", source = "always", border = "solid", focusable = true}, update_in_insert = false})

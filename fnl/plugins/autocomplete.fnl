@@ -17,14 +17,13 @@
     (and (not= col 0)
          (= (: (: (. (vim.api.nvim_buf_get_lines 0 (- line 1) line true) 1) :sub col col) :match "%s") nil))))
 
-(fn mappings
-  [cmp luasnip]
+(fn mappings [cmp luasnip]
   {:<C-p> (cmp.mapping.select_prev_item)
    :<C-n> (cmp.mapping.select_next_item)
    :<C-u> (cmp.mapping.scroll_docs (- 4))
    :<C-d> (cmp.mapping.scroll_docs 4)
    :<C-Space> (cmp.mapping.complete)
-   :<C-e> (cmp.mapping.close)
+   :<C-x> (cmp.mapping.close)
    :<CR> (cmp.mapping.confirm {:behavior cmp.ConfirmBehavior.Insert
                                :select true})
    :<Tab> (cmp.mapping (fn [fallback]
@@ -41,8 +40,7 @@
                              (fallback)))
                          {1 :i 2 :s})})
 
-(fn setup
-  []
+(fn setup []
   (let [cmp (require :cmp)
         luasnip (require :luasnip)
         lspkind (require :lspkind)]

@@ -1,8 +1,7 @@
 (local {: autoload} (require :nfnl.module))
 (local nvim (autoload :nvim))
 
-(fn on-attach-fn
-  [bufnr]
+(fn on-attach-fn [bufnr]
   (let [gs (require :gitsigns)
         mappings [[:n :p "preview_hunk()"]
                   [:n :b "blame_line{full=true}"]

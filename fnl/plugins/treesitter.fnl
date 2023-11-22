@@ -1,8 +1,7 @@
 (local ensures [:bash :clojure :dockerfile :fennel :html :java :groovy :javascript
                 :json :lua :markdown :yaml :sql])
 
-(fn setup
-  []
+(fn setup []
   (let [treesitter (require :nvim-treesitter.configs)]
     (treesitter.setup {:highlight {:enable true}
                        :indent {:enable true}

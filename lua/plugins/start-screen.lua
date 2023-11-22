@@ -4,4 +4,4 @@ local function setup()
   local theme = require("alpha.themes.startify")
   return alpha.setup(theme.config)
 end
-return {{"goolord/alpha-nvim", dependencies = {"nvim-tree/nvim-web-devicons"}, config = setup}}
+return {{"goolord/alpha-nvim", dependencies = {"nvim-tree/nvim-web-devicons"}, config = setup, lazy = false}}

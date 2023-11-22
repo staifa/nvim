@@ -2,8 +2,7 @@
 (local nvim (autoload :nvim))
 
 ;symbols to show for lsp diagnostics
-(fn define-signs
-  [prefix]
+(fn define-signs [prefix]
   (let [error (.. prefix :SignError)
         warn  (.. prefix :SignWarn)
         info  (.. prefix :SignInfo)
@@ -15,8 +14,7 @@
 
 (define-signs :Diagnostic)
 
-(fn on-attach-fn
-  [client bufnr]
+(fn on-attach-fn [client bufnr]
   (let [{: on_attach} (require :lsp-format)
         mappings [[:n :gd :vim.lsp.buf.definition]
                   [:n :K :vim.lsp.buf.hover]
@@ -37,8 +35,7 @@
     (each [_ [mode from to] (ipairs mappings)]
       (nvim.buf_set_keymap bufnr mode from (.. "<cmd>lua " to "()<CR>") {:noremap true}))))
 
-(fn setup
-  []
+(fn setup []
   (let [lsp (require :lspconfig)
         cmplsp (require :cmp_nvim_lsp)
         handlers {:textDocument/publishDiagnostics
@@ -59,6 +56,15 @@
         capabilities (cmplsp.default_capabilities)
         before_init (fn [params]
                       (set params.workDoneToken :1))]
+    ;; Lua
+    (lsp.lua_ls.setup {:settings {:Lua {:diagnostics {:globals [:vim]}}}})
+    ;; Fennel
+    (lsp.fennel_language_server.setup
+      {:filetypes [:fennel]
+       :root_dir (lsp.util.root_pattern :fnl :lua)
+       :single_file_support true
+       :settings {:fennel {:diagnostics {:globals [:vim :jit :comment]}
+                           :workspace {:library (vim.api.nvim_list_runtime_paths)}}}})
     ;; Clojure
     (lsp.clojure_lsp.setup {:on_attach on-attach-fn
                             :handlers handlers

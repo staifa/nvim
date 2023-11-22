@@ -30,8 +30,7 @@
    :lualine_y [:progress]
    :lualine_z [:location]})
 
-(fn setup
-  []
+(fn setup []
   (let [lualine (require :lualine)]
     (lualine.setup {:options {:component_separators {:right ""}
                               :section_separators {:left "" :right ""}
