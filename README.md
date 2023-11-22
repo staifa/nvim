@@ -69,7 +69,7 @@ if you're not familiar with them. These plugins are extremely handy.
 | `tx`         | Close tab                                  |
 | `<M-w>`      | Easy motion by words                       |
 | `<C-f>`      | Telescope - fuzzy find files               |
-| `<C-w>`      | Telescope - live grep                      |
+| `<C-j>`      | Telescope - live grep                      |
 | `<C-b>`      | Telescope - currently open buffers         |
 | `<C-h>`      | Telescope - help tags                      |
 | `<C-s>`      | Telescope - resume last search             |

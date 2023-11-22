@@ -1,4 +1,5 @@
 -- [nfnl] Compiled from fnl/plugins/telescope.fnl by https://github.com/Olical/nfnl, do not edit.
+require("config/telescope")
 local function setup()
   local telescope = require("telescope")
   local themes = require("telescope.themes")
@@ -8,7 +9,7 @@ local function setup()
   return telescope.load_extension("lazygit")
 end
 local function setup_keys()
-  local mappings = {f = "find_files", w = "live_grep", b = "buffers", h = "help_tags", s = "resume"}
+  local mappings = {f = "find_files", j = "live_grep", b = "buffers", h = "help_tags", s = "resume"}
   local from
   local function _1_(_241)
     return ("<C-" .. _241 .. ">")
@@ -31,13 +32,4 @@ local function setup_keys()
   end
   return tbl_17_auto
 end
-local function _4_(args)
-  if ("help" == args.data.filetype) then
-    local key = vim.api.nvim_replace_termcodes("<C-f>", false, false, true)
-    return vim.api.nvim_feedkeys(key, "t", {})
-  else
-    return nil
-  end
-end
-vim.api.nvim_create_autocmd("User", {pattern = "TelescopePreviewerLoaded", callback = _4_})
 return {{"nvim-telescope/telescope.nvim", dependencies = {"nvim-telescope/telescope-ui-select.nvim", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim"}, keys = setup_keys, config = setup}}
