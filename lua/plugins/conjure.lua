@@ -1,10 +1,17 @@
 -- [nfnl] Compiled from fnl/plugins/conjure.fnl by https://github.com/Olical/nfnl, do not edit.
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
-local nvim = autoload("nvim")
-local function _2_()
-  nvim.g["conjure#client#clojure#nrepl#eval#auto_require"] = false
-  nvim.g["conjure#client#clojure#nrepl#connection#auto_repl#enabled"] = false
+local conjure = autoload("conjure.main")
+local mapping = autoload("conjure.mapping")
+local _local_2_ = autoload("nvim")
+local g = _local_2_["g"]
+local function setup(_, _opts)
+  conjure.main()
+  return mapping["on-filetype"]()
+end
+local function init()
+  g["conjure#log#jump_to_latest#enabled"] = true
+  g["conjure#highlight#enabled"] = true
   return nil
 end
-return {{"Olical/conjure", init = _2_}}
+return {{"Olical/conjure", ft = {"clojure", "fennel", "lua"}, config = setup, init = init}}
