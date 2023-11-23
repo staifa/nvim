@@ -10,6 +10,7 @@ WIP, but very much usable.
 * [neovim](https://github.com/neovim/neovim) - obviously
 * [patched font](https://github.com/ryanoasis/nerd-fonts) - for icons
 * [lazygit](https://github.com/jesseduffield/lazygit) - I love fugitive, but it took a lot of tweaking to get it into a shape that was actually pleasant to work with for me, so I opted for less extensibility, but better out-of-the-box experience
+* [rust](https://www.rust-lang.org/) - unfortunately, `parinfer-rust` is still the only parinfer for nvim that works
 
 ## Installation ##
 
