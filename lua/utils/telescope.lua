@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/config/telescope.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] Compiled from fnl/utils/telescope.fnl by https://github.com/Olical/nfnl, do not edit.
 local function _1_(args)
   if ("help" == args.data.filetype) then
     local key = vim.api.nvim_replace_termcodes("<C-f>", false, false, true)

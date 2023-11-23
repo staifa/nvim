@@ -4,5 +4,5 @@
    :callback (fn [args]
                (when (= :help args.data.filetype)
                  ;; workaround for help preview aligning right on long lines
-                 (let [key (vim.api.nvim_replace_termcodes :<C-f> false false true)]
-                   (vim.api.nvim_feedkeys key :t {}))))})
+                 (let [key (vim.api.nvim_replace_termcodes "<C-f>" true false true)]
+                   (vim.api.nvim_feedkeys key :t false))))})

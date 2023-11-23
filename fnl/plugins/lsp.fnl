@@ -1,5 +1,8 @@
 (local {: autoload} (require :nfnl.module))
-(local nvim (autoload :nvim))
+(local lsp-format (autoload :lsp-format))
+(local tb (autoload :telescope.builtin))
+(local lsp (autoload :lspconfig))
+(local cmplsp (autoload :cmp_nvim_lsp))
 
 ;symbols to show for lsp diagnostics
 (fn define-signs [prefix]
@@ -15,30 +18,29 @@
 (define-signs :Diagnostic)
 
 (fn on-attach-fn [client bufnr]
-  (let [{: on_attach} (require :lsp-format)
-        mappings [[:n :gd :vim.lsp.buf.definition]
-                  [:n :K :vim.lsp.buf.hover]
-                  [:n :<leader>ld :vim.lsp.buf.declaration]
-                  [:n :<leader>lt :vim.lsp.buf.type_definition]
-                  [:n :<leader>lh :vim.lsp.buf.signature_help]
-                  [:n :<leader>r :vim.lsp.buf.rename]
-                  [:n :<leader>lq :vim.diagnostic.setloclist]
-                  [:n :<leader>lf :vim.lsp.buf.format]
-                  [:n :<leader>w :vim.diagnostic.goto_next]
-                  [:n :<leader>W :vim.diagnostic.goto_prev]
-                  [:n :<C-a> :vim.lsp.buf.code_action]
-                  [:v :<C-a> :vim.lsp.buf.range_code_action]
-                  [:n :<C-i> "require'telescope.builtin'.lsp_implementations"]
-                  [:n :<M-r> "require'telescope.builtin'.lsp_references"]
-                  [:n :<M-d> "require'telescope.builtin'.diagnostics"]]]
-    (on_attach client bufnr)
+  (let [mappings [[:n :gd vim.lsp.buf.definition]
+                  [:n :K vim.lsp.buf.hover]
+                  [:n :<leader>ld vim.lsp.buf.declaration]
+                  [:n :<leader>lt vim.lsp.buf.type_definition]
+                  [:n :<leader>lh vim.lsp.buf.signature_help]
+                  [:n :<leader>r vim.lsp.buf.rename]
+                  [:n :<leader>lq vim.diagnostic.setloclist]
+                  [:n :<leader>lf vim.lsp.buf.format]
+                  [:n :<leader>w vim.diagnostic.goto_next]
+                  [:n :<leader>W vim.diagnostic.goto_prev]
+                  [:n :<C-a> vim.lsp.buf.code_action]
+                  [:v :<C-a> #(vim.lsp.buf.code_action
+                                {:range {:start (vim.api.nvim_buf_get_mark bufnr "<")
+                                         :end (vim.api.nvim_buf_get_mark bufnr ">")}})]
+                  [:n :<C-i> tb.lsp_implementations]
+                  [:n :<M-r> tb.lsp_references]
+                  [:n :<M-d> tb.diagnostics]]]
     (each [_ [mode from to] (ipairs mappings)]
-      (nvim.buf_set_keymap bufnr mode from (.. "<cmd>lua " to "()<CR>") {:noremap true}))))
+      (vim.keymap.set mode from to {:noremap true :buffer bufnr}))
+    (lsp-format.on_attach client)))
 
 (fn setup []
-  (let [lsp (require :lspconfig)
-        cmplsp (require :cmp_nvim_lsp)
-        handlers {:textDocument/publishDiagnostics
+  (let [handlers {:textDocument/publishDiagnostics
                   (vim.lsp.with
                     vim.lsp.diagnostic.on_publish_diagnostics
                     {:severity_sort true
@@ -81,7 +83,8 @@
                                 :focusable true}})
 
 [{1 :neovim/nvim-lspconfig
-  :dependencies [:lukas-reineke/lsp-format.nvim
+  :dependencies [{1 :lukas-reineke/lsp-format.nvim
+                  :opts {}}
                  {1 :williamboman/mason.nvim
                   :opts {}}
                  {1 :williamboman/mason-lspconfig.nvim

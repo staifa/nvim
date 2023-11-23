@@ -1,8 +1,9 @@
 (local {: autoload} (require :nfnl.module))
-(local lsp (autoload :config.lsp))
+(local {: get-progress-message} (autoload :utils.lsp))
+(local lualine (autoload :lualine))
 
 (fn lsp_connection []
-  (let [message (lsp.get-progress-message)]
+  (let [message (get-progress-message)]
     (if
       (or (= message.status :begin)
           (= message.status :report)) (.. message.msg " : " message.percent "%% ")
@@ -31,12 +32,11 @@
    :lualine_z [:location]})
 
 (fn setup []
-  (let [lualine (require :lualine)]
-    (lualine.setup {:options {:component_separators {:right ""}
-                              :section_separators {:left "" :right ""}
-                              :theme :gruvbox}
-                    :sections sections
-                    :inactive_sections sections})))
+  (lualine.setup {:options {:component_separators {:right ""}
+                            :section_separators {:left "" :right ""}
+                            :theme :gruvbox}
+                  :sections sections
+                  :inactive_sections sections}))
 
 [{1 :nvim-lualine/lualine.nvim
   :config setup}]

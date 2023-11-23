@@ -1,3 +1,8 @@
+(local {: autoload} (require :nfnl.module))
+(local ls (autoload :luasnip))
+(local lspkind (autoload :lspkind))
+(local cmp (autoload :cmp))
+
 (local cmp-srcs
   [{:name :nvim_lsp}
    {:name :conjure}
@@ -9,7 +14,7 @@
     (and (not= col 0)
          (= (: (: (. (vim.api.nvim_buf_get_lines 0 (- line 1) line true) 1) :sub col col) :match "%s") nil))))
 
-(fn mappings [cmp luasnip]
+(fn mappings [cmp]
   {:<C-p> (cmp.mapping.select_prev_item)
    :<C-n> (cmp.mapping.select_next_item)
    :<C-u> (cmp.mapping.scroll_docs (- 4))
@@ -18,29 +23,31 @@
    :<C-x> (cmp.mapping.close)
    :<CR> (cmp.mapping.confirm {:behavior cmp.ConfirmBehavior.Insert
                                :select true})
+   :<Esc> (cmp.mapping (fn [fallback]
+                         (if (and (cmp.visible) (ls.in_snippet))
+                           (cmp.abort)
+                           (fallback))))
    :<Tab> (cmp.mapping (fn [fallback]
                          (if
                            (cmp.visible) (cmp.select_next_item)
-                           (luasnip.expand_or_jumpable) (luasnip.expand_or_jump)
+                           (ls.expand_or_jumpable) (ls.expand_or_jump)
                            (has-words-before) (cmp.complete)
                            (fallback)))
-                       {1 :i 2 :s})
+                       [:i :s])
    :<S-Tab> (cmp.mapping (fn [fallback]
                            (if
                              (cmp.visible) (cmp.select_prev_item)
-                             (luasnip.jumpable -1) (luasnip.jump -1)
+                             (ls.jumpable -1) (ls.jump -1)
                              (fallback)))
-                         {1 :i 2 :s})})
+                         [:i :s])})
 
 (fn setup []
-  (let [cmp (require :cmp)
-        luasnip (require :luasnip)
-        lspkind (require :lspkind)]
-    (cmp.setup {:formatting {:format (lspkind.cmp_format {:mode :symbol})}
-                :mapping (mappings cmp luasnip)
-                :snippet {:expand (fn [args]
-                                    (luasnip.lsp_expand args.body))}
-                :sources cmp-srcs})))
+  (cmp.setup {:formatting {:format (lspkind.cmp_format {:mode :symbol})}
+              :mapping (mappings cmp)
+              :snippet {:expand (fn [args]
+                                  (vim.cmd :ParinferOff)
+                                  (ls.lsp_expand args.body))}
+              :sources cmp-srcs}))
 
 [{1 :hrsh7th/nvim-cmp
   :dependencies [:hrsh7th/cmp-buffer
