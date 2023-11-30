@@ -1,6 +1,5 @@
 ;; global key mappings
-(let [mappings [[:<Space> :i<Space><Esc> "Space in normal mode"]
-                [:gn #(vim.cmd :bn) "Switch to next buffer"]
+(let [mappings [[:gn #(vim.cmd :bn) "Switch to next buffer"]
                 [:gp #(vim.cmd :bp) "Switch to previous buffer"]
                 [:gx #(vim.cmd :bd) "Close buffer"]
                 [:gX #(vim.cmd :%bd|e#|bd#) "Close all buffers except the current one"]
@@ -11,5 +10,7 @@
                 [:tx #(vim.cmd :tabclose) "Close tab"]]]
   (each [_ [from to desc] (ipairs mappings)]
     (vim.keymap.set :n from to {:noremap true :desc desc})))
+
+(vim.keymap.set [:n :v :i] :<esc> "<esc>:update<cr>" {:noremap true :silent true :desc ""})
 
 {}

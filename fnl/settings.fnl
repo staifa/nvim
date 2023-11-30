@@ -3,7 +3,9 @@
 
 ;; global nvim options
 (local options
-  {; tabs is space
+  {; autosave
+   :autowriteall true
+   ; tabs is space
    :expandtab true
    ; tab/indent size
    :tabstop 2

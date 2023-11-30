@@ -1,2 +1,3 @@
-[{1 :eraserhd/parinfer-rust
-  :build "cargo build --release"}]
+[{1 :harrygallagher4/nvim-parinfer-rust
+  :opts {:managed true
+         :trail_highlight false}}]

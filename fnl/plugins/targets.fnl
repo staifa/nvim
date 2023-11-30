@@ -1,2 +1,1 @@
-[{1 :wellle/targets.vim
-  :lazy false}]
+[:wellle/targets.vim]

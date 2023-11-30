@@ -27,6 +27,6 @@ require("lazy").setup({
   { import = "plugins" }
 })
 
-require("utils.autocommands")
 require("settings")
 require("mappings")
+require("utils.autocommands")

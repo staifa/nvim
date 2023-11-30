@@ -9,5 +9,5 @@ local function setup(_, _opts)
   conjure.main()
   return mapping["on-filetype"]()
 end
-local options = {["conjure#log#jump_to_latest#enabled"] = true, ["conjure#highlight#enabled"] = true}
+local options = {["conjure#highlight#enabled"] = true}
 return {{"Olical/conjure", ft = {"clojure", "fennel", "lua"}, config = setup, init = assoc_opts(vim.g, options)}}

@@ -1,2 +1,1 @@
-[{1 :RRethy/vim-illuminate
-  :lazy false}]
+[:RRethy/vim-illuminate]

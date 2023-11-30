@@ -8,6 +8,8 @@
   (treesitter.setup {:highlight {:enable true}
                      :indent {:enable true}
                      :matchup {:enable true}
+                     ;; lazy loading
+                     :event [:BufReadPre :BufNewFile]
                      :ensure_installed ensures}))
 
 [{1 :nvim-treesitter/nvim-treesitter

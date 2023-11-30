@@ -28,7 +28,7 @@ do
   local function _9_()
     return vim.cmd("tabclose")
   end
-  mappings = {{"<Space>", "i<Space><Esc>", "Space in normal mode"}, {"gn", _1_, "Switch to next buffer"}, {"gp", _2_, "Switch to previous buffer"}, {"gx", _3_, "Close buffer"}, {"gX", _4_, "Close all buffers except the current one"}, {"<Backspace>", _5_, "Clear highlights"}, {"to", _6_, "Open new tab"}, {"tn", _7_, "Next tab"}, {"tp", _8_, "Previous tab"}, {"tx", _9_, "Close tab"}}
+  mappings = {{"gn", _1_, "Switch to next buffer"}, {"gp", _2_, "Switch to previous buffer"}, {"gx", _3_, "Close buffer"}, {"gX", _4_, "Close all buffers except the current one"}, {"<Backspace>", _5_, "Clear highlights"}, {"to", _6_, "Open new tab"}, {"tn", _7_, "Next tab"}, {"tp", _8_, "Previous tab"}, {"tx", _9_, "Close tab"}}
   for _, _10_ in ipairs(mappings) do
     local _each_11_ = _10_
     local from = _each_11_[1]
@@ -37,4 +37,5 @@ do
     vim.keymap.set("n", from, to, {noremap = true, desc = desc})
   end
 end
+vim.keymap.set({"n", "v", "i"}, "<esc>", "<esc>:update<cr>", {noremap = true, silent = true, desc = ""})
 return {}
