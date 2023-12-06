@@ -6,6 +6,8 @@
 
 (fn setup []
   (telescope.setup {:defaults {:file_ignore_patterns [:node_modules :.undo]
+                               :layout_config {:horizontal {:width 0.8
+                                                            :preview_width 0.5}}
                                :mappings {:i {:<esc> actions.close}}
                                :vimgrep_arguments [:rg
                                                    :--color=never

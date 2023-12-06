@@ -4,16 +4,17 @@ local autoload = _local_1_["autoload"]
 local api = vim.api
 local ls = autoload("luasnip")
 local parinfer = autoload("parinfer")
-local function _2_(args)
+local _local_2_ = autoload("utils.common")
+local assoc_opts = _local_2_["assoc-opts"]
+local function _3_(args)
   if ("help" == args.data.filetype) then
-    local key = api.nvim_replace_termcodes("<C-f>", true, false, true)
-    return api.nvim_feedkeys(key, "t", false)
+    return assoc_opts(vim.wo, {wrap = true})
   else
     return nil
   end
 end
-api.nvim_create_autocmd({"User"}, {pattern = "TelescopePreviewerLoaded", callback = _2_})
-local function _4_()
+api.nvim_create_autocmd({"User"}, {pattern = "TelescopePreviewerLoaded", callback = _3_})
+local function _5_()
   if ls.in_snippet() then
     parinfer["detach-current-buf!"]()
     return vim.diagnostic.disable()
@@ -21,8 +22,8 @@ local function _4_()
     return nil
   end
 end
-api.nvim_create_autocmd({"ModeChanged"}, {pattern = "*:s", callback = _4_})
-local function _6_()
+api.nvim_create_autocmd({"ModeChanged"}, {pattern = "*:s", callback = _5_})
+local function _7_()
   if ls.in_snippet() then
     parinfer["attach-current-buf!"]()
     return vim.diagnostic.enable()
@@ -30,4 +31,4 @@ local function _6_()
     return nil
   end
 end
-return api.nvim_create_autocmd({"ModeChanged"}, {pattern = "[is]:n", callback = _6_})
+return api.nvim_create_autocmd({"ModeChanged"}, {pattern = "[is]:n", callback = _7_})

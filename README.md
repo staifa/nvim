@@ -12,6 +12,7 @@ WIP, but very much usable.
 * [patched font](https://github.com/ryanoasis/nerd-fonts) - for icons
 * [lazygit](https://github.com/jesseduffield/lazygit) - I love fugitive, but it took a lot of tweaking to get it into a shape that was actually pleasant to work with for me, so I opted for less extensibility, but better out-of-the-box experience
 * [cargo](https://github.com/rust-lang/cargo) - needed for parinfer-rust, there is no native imeplementation that works yet
+* xclip - or similar for os clipboard support
 
 ## Installation ##
 

@@ -2,15 +2,15 @@
 (local api vim.api)
 (local ls (autoload :luasnip))
 (local parinfer (autoload :parinfer))
+(local {: assoc-opts} (autoload :utils.common))
 
-;; workaround for help preview aligning right on long lines
+;; wrap lines in help previewer
 (api.nvim_create_autocmd
   [:User]
   {:pattern :TelescopePreviewerLoaded
    :callback (fn [args]
                (when (= :help args.data.filetype)
-                 (let [key (api.nvim_replace_termcodes "<C-f>" true false true)]
-                   (api.nvim_feedkeys key :t false))))})
+                 (assoc-opts vim.wo {:wrap true})))})
 
 ;; disable diagnostics and parinfer in snippets
 (api.nvim_create_autocmd

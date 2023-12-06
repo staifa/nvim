@@ -11,6 +11,10 @@
    :tabstop 2
    :shiftwidth 2
    :softtabstop 2
+   :smarttab true
+   :ai true
+   :si true
+   :wrap true
    ; disable mouse
    :mouse ""
    ; create splits vertically by default
