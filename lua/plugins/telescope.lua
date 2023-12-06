@@ -6,7 +6,7 @@ local themes = autoload("telescope.themes")
 local actions = autoload("telescope.actions")
 local builtin = autoload("telescope.builtin")
 local function setup()
-  return telescope.setup({defaults = {file_ignore_patterns = {"node_modules", ".undo"}, layout_config = {horizontal = {width = 0.8, preview_width = 0.5}}, mappings = {i = {["<esc>"] = actions.close}}, vimgrep_arguments = {"rg", "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case", "--iglob", "!.git", "--hidden"}}, extensions = {["ui-select"] = {themes.get_dropdown({})}}, pickers = {find_files = {find_command = {"rg", "--files", "--iglob", "!.git", "--hidden"}}}}, telescope.load_extension("ui-select"), telescope.load_extension("lazygit"))
+  return telescope.setup({defaults = {file_ignore_patterns = {"node_modules", ".undo"}, layout_config = {horizontal = {width = 0.8, preview_width = 0.5}}, mappings = {i = {["<esc>"] = actions.close}}, vimgrep_arguments = {"rg", "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case", "--iglob", "!.git", "--hidden"}}, extensions = {["ui-select"] = {themes.get_dropdown({})}, fzf = {fuzzy = true, override_generic_sorter = true, override_file_sorter = true, case_mode = "smart_case"}}, pickers = {find_files = {find_command = {"rg", "--files", "--iglob", "!.git", "--hidden"}}}}, telescope.load_extension("fzf"), telescope.load_extension("ui-select"), telescope.load_extension("lazygit"))
 end
 local function setup_keys()
   local mappings = {f = builtin.find_files, j = builtin.live_grep, b = builtin.buffers, h = builtin.help_tags, s = builtin.resume}
@@ -27,4 +27,4 @@ local function setup_keys()
   end
   return tbl_17_auto
 end
-return {{"nvim-telescope/telescope.nvim", dependencies = {"nvim-telescope/telescope-ui-select.nvim", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim"}, keys = setup_keys, config = setup}}
+return {{"nvim-telescope/telescope.nvim", dependencies = {"nvim-telescope/telescope-ui-select.nvim", "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", {"nvim-telescope/telescope-fzf-native.nvim", build = "make"}}, keys = setup_keys, config = setup}}
