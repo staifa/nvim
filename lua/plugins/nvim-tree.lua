@@ -2,4 +2,4 @@
 local function _1_()
   return vim.cmd("NvimTreeToggle")
 end
-return {{"nvim-tree/nvim-tree.lua", opts = {}, keys = {{"<F2>", _1_}}}}
+return {{"nvim-tree/nvim-tree.lua", opts = {update_focused_file = {enable = true, update_cwd = true}}, keys = {{"<F2>", _1_}}}}

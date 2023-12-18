@@ -1,3 +1,3 @@
-[{1 :windwp/nvim-autopairs
-  :event :InsertEnter
+[{1 :altermo/ultimate-autopair.nvim
+  :event [:InsertEnter :CmdlineEnter]
   :opts {}}]
