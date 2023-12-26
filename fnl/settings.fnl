@@ -47,6 +47,8 @@
    :number true
    ; show line and column number
    :ruler true
+   ; hide tabline
+   :showtabline 0
    ; makes signcolumn always one column with signs and linenumber
    :signcolumn "number"})
 
