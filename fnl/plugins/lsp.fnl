@@ -73,14 +73,6 @@
                                 :border :solid
                                 :focusable true}})
 
-(fn fennel-setup []
-  (lsp.fennel_language_server.setup
-    {:filetypes [:fennel]
-     :root_dir (lsp.util.root_pattern :fnl :lua)
-     :single_file_support true
-     :settings {:fennel {:diagnostics {:globals [:vim :jit :comment]}
-                         :workspace {:library (api.nvim_list_runtime_paths)}}}}))
-
 (fn lua-setup []
   (lsp.lua_ls.setup {:settings {:Lua {:diagnostics {:globals [:vim]}}}}))
 
@@ -91,6 +83,5 @@
                   :opts {}}
                  {1 :williamboman/mason-lspconfig.nvim
                   :opts {:ensure_installed [:clojure_lsp
-                                            :lua_ls
-                                            :fennel_language_server]}}]
-  :config #(do (clj-setup) (fennel-setup) (lua-setup))}]
+                                            :lua_ls]}}]
+  :config #(do (clj-setup) (lua-setup) (lsp.fennel_ls.setup {}))}]

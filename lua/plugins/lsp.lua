@@ -44,15 +44,12 @@ local function clj_setup()
   return lsp.clojure_lsp.setup({on_attach = on_attach_fn, handlers = handlers, before_init = before_init, capabilities = capabilities})
 end
 vim.diagnostic.config({virtual_text = true, severity_sort = true, float = {header = "", source = "always", border = "solid", focusable = true}, update_in_insert = false})
-local function fennel_setup()
-  return lsp.fennel_language_server.setup({filetypes = {"fennel"}, root_dir = lsp.util.root_pattern("fnl", "lua"), single_file_support = true, settings = {fennel = {diagnostics = {globals = {"vim", "jit", "comment"}}, workspace = {library = api.nvim_list_runtime_paths()}}}})
-end
 local function lua_setup()
   return lsp.lua_ls.setup({settings = {Lua = {diagnostics = {globals = {"vim"}}}}})
 end
 local function _6_()
   clj_setup()
-  fennel_setup()
-  return lua_setup()
+  lua_setup()
+  return lsp.fennel_ls.setup({})
 end
-return {{"neovim/nvim-lspconfig", dependencies = {{"lukas-reineke/lsp-format.nvim", opts = {}}, {"williamboman/mason.nvim", opts = {}}, {"williamboman/mason-lspconfig.nvim", opts = {ensure_installed = {"clojure_lsp", "lua_ls", "fennel_language_server"}}}}, config = _6_}}
+return {{"neovim/nvim-lspconfig", dependencies = {{"lukas-reineke/lsp-format.nvim", opts = {}}, {"williamboman/mason.nvim", opts = {}}, {"williamboman/mason-lspconfig.nvim", opts = {ensure_installed = {"clojure_lsp", "lua_ls"}}}}, config = _6_}}
