@@ -7,11 +7,11 @@
 (local cmp-srcs
   [{:name :nvim_lsp :group_index 1}
    {:name :conjure :group_index 2}
-   {:name :buffer :group_index 1}
+   {:name :buffer :group_index 1 :option #(vim.api.nvim_list_bufs)}
    {:name :luasnip :group_index 2}])
 
 (fn has-words-before []
-  (let [(line col) (unpack (api.nvim_win_get_cursor 0))]
+  (let [(line col) (table.unpack (api.nvim_win_get_cursor 0))]
     (and (not= col 0)
          (= (: (: (. (api.nvim_buf_get_lines 0 (- line 1) line true) 1) :sub col col) :match "%s") nil))))
 
@@ -52,6 +52,7 @@
 [{1 :hrsh7th/nvim-cmp
   :dependencies [:hrsh7th/cmp-buffer
                  :hrsh7th/cmp-nvim-lsp
+                 :hrsh7th/cmp-cmdline
                  :PaterJason/cmp-conjure
                  :L3MON4D3/LuaSnip
                  :saadparwaiz1/cmp_luasnip
