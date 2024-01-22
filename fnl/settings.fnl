@@ -18,7 +18,7 @@
    ; disable mouse
    :mouse ""
    ; create splits vertically by default
-   :diffopt "vertical"
+   :diffopt :vertical
    ; don't redraw everytime
    :lazyredraw true
    ; avoid slow rendering for long lines
@@ -28,6 +28,8 @@
    :undofile true
    ; hide cmd line
    :cmdheight 0
+   ; restrict unnecessary error messages
+   :shortmess "filnxtToOFAc"
    ; start scrolling when you're 15 away from bottom (and side)
    :scrolloff 15
    :sidescrolloff 35
@@ -42,7 +44,7 @@
    ; smart search case
    :smartcase true
    ; shared clipboard with linux
-   :clipboard "unnamedplus"
+   :clipboard :unnamedplus
    ; show line numbers
    :number true
    ; show line and column number
@@ -50,8 +52,10 @@
    ; hide tabline
    :showtabline 0
    ; makes signcolumn always one column with signs and linenumber
-   :signcolumn "number"})
+   :signcolumn :number})
 
 (assoc-opts vim.o options)
+
+; (vim.o.shortmess:append "c")
 
 {}

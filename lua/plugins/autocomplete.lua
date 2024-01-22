@@ -9,7 +9,7 @@ local cmp_srcs
 local function _2_()
   return vim.api.nvim_list_bufs()
 end
-cmp_srcs = {{name = "nvim_lsp", group_index = 1}, {name = "conjure", group_index = 2}, {name = "buffer", group_index = 1, option = _2_}, {name = "luasnip", group_index = 2}}
+cmp_srcs = {{name = "nvim_lsp", group_index = 1}, {name = "conjure", group_index = 2}, {name = "buffer", group_index = 1, option = {get_bufnrs = _2_}}, {name = "luasnip", group_index = 2}}
 local function has_words_before()
   local line, col = table.unpack(api.nvim_win_get_cursor(0))
   return ((col ~= 0) and (((api.nvim_buf_get_lines(0, (line - 1), line, true))[1]):sub(col, col):match("%s") == nil))

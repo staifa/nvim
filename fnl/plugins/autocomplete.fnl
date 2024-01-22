@@ -7,7 +7,7 @@
 (local cmp-srcs
   [{:name :nvim_lsp :group_index 1}
    {:name :conjure :group_index 2}
-   {:name :buffer :group_index 1 :option #(vim.api.nvim_list_bufs)}
+   {:name :buffer :group_index 1 :option {:get_bufnrs #(vim.api.nvim_list_bufs)}}
    {:name :luasnip :group_index 2}])
 
 (fn has-words-before []
