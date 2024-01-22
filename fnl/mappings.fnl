@@ -10,7 +10,8 @@
                 [:tp #(vim.cmd :tabprev) "Previous tab"]
                 [:tx #(vim.cmd :tabclose) "Close tab"]
                 [:qw #(vim.cmd :wqa) "Save all buffers and exit"]
-                [:qq #(vim.cmd :wq) "Exit"]]]
+                [:qe #(vim.cmd :q) "Close buffer"]
+                [:qq #(vim.cmd :qa) "Exit"]]]
   (each [_ [from to desc] (ipairs mappings)]
     (vim.keymap.set :n from to {:noremap true :desc desc})))
 

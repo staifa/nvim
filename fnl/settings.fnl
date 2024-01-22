@@ -56,6 +56,6 @@
 
 (assoc-opts vim.o options)
 
-; (vim.o.shortmess:append "c")
+(set vim.g.python3_host_prog "/home/staifa/.pyenv/versions/neovim3/bin/python")
 
 {}
