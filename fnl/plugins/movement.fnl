@@ -1,8 +1,7 @@
 (fn setup []
-  (let [l (require :leap)]
-    (l.add_default_mappings)
-    (vim.keymap.del [:x :o] "x")
-    (vim.keymap.del [:x :o] "X")))
+  (let [{: leap} (require :leap)]
+    (vim.keymap.set [:n :x :o] :F #(leap {:backward true}))
+    (vim.keymap.set [:n :x :o] :f #(leap {}))))
 
 [{1 :ggandor/leap.nvim
   :dependencies [:tpope/vim-repeat]

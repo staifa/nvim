@@ -4,7 +4,7 @@
                 [:gx #(vim.cmd :bd) "Close buffer"]
                 [:gX #(vim.cmd :%bd|e#|bd#) "Close all buffers except the current one"]
                 [:<Backspace> #(vim.cmd :noh) "Clear highlights"]
-                [:<space> "i<space><Esc>" "Insert space in normal mode"]
+                [:<space> "a<space><Esc>" "Insert space in normal mode"]
                 [:to #(vim.cmd :tabnew) "Open new tab"]
                 [:tn #(vim.cmd :tabnext) "Next tab"]
                 [:tp #(vim.cmd :tabprev) "Previous tab"]

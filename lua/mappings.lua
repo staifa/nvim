@@ -37,7 +37,7 @@ do
   local function _12_()
     return vim.cmd("qa")
   end
-  mappings = {{"gn", _1_, "Switch to next buffer"}, {"gp", _2_, "Switch to previous buffer"}, {"gx", _3_, "Close buffer"}, {"gX", _4_, "Close all buffers except the current one"}, {"<Backspace>", _5_, "Clear highlights"}, {"<space>", "i<space><Esc>", "Insert space in normal mode"}, {"to", _6_, "Open new tab"}, {"tn", _7_, "Next tab"}, {"tp", _8_, "Previous tab"}, {"tx", _9_, "Close tab"}, {"qw", _10_, "Save all buffers and exit"}, {"qe", _11_, "Close buffer"}, {"qq", _12_, "Exit"}}
+  mappings = {{"gn", _1_, "Switch to next buffer"}, {"gp", _2_, "Switch to previous buffer"}, {"gx", _3_, "Close buffer"}, {"gX", _4_, "Close all buffers except the current one"}, {"<Backspace>", _5_, "Clear highlights"}, {"<space>", "a<space><Esc>", "Insert space in normal mode"}, {"to", _6_, "Open new tab"}, {"tn", _7_, "Next tab"}, {"tp", _8_, "Previous tab"}, {"tx", _9_, "Close tab"}, {"qw", _10_, "Save all buffers and exit"}, {"qe", _11_, "Close buffer"}, {"qq", _12_, "Exit"}}
   for _, _13_ in ipairs(mappings) do
     local _each_14_ = _13_
     local from = _each_14_[1]

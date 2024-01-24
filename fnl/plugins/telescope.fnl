@@ -31,6 +31,7 @@
                                                           :--hidden]}}}
     (telescope.load_extension :fzf)
     (telescope.load_extension :ui-select)
+    (telescope.load_extension :session-lens)
     (telescope.load_extension :lazygit)))
 
 (fn setup-keys []
@@ -38,7 +39,8 @@
                   :j builtin.live_grep
                   :b builtin.buffers
                   :h builtin.help_tags
-                  :s builtin.resume}
+                  :l builtin.registers
+                  :k builtin.resume}
         from #(.. :<C- $1 :>)]
     (icollect [key cmd (pairs mappings)]
       [(from key) cmd])))

@@ -51,6 +51,7 @@
    :ruler true
    ; hide tabline
    :showtabline 0
+   :sessionoptions "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
    ; makes signcolumn always one column with signs and linenumber
    :signcolumn :number})
 
