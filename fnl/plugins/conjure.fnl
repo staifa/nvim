@@ -11,6 +11,7 @@
   {:conjure#highlight#enabled true})
 
 [{1 :Olical/conjure
+  :dependencies [:PaterJason/cmp-conjure]
   :ft [:clojure :fennel :lua]
   :config setup
   :init (assoc-opts vim.g options)}]

@@ -1,3 +1,2 @@
 [{1 :altermo/ultimate-autopair.nvim
-  :event [:InsertEnter :CmdlineEnter]
-  :opts {}}]
+  :event [:InsertEnter :CmdlineEnter]}]

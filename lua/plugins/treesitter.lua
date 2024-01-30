@@ -7,6 +7,12 @@ local assoc_opts = _local_2_["assoc-opts"]
 local options = {foldexpr = "nvim_treesitter#foldexpr()", foldmethod = "expr", foldenable = false}
 local function setup()
   assoc_opts(vim.g, options)
-  return treesitter.setup({highlight = {enable = true}, indent = {enable = true}, matchup = {enable = true}, endwise = {enable = true}, event = {"BufReadPre", "BufNewFile"}, ensure_installed = maintained, additional_vim_regex_highlighting = false, sync_install = false})
+  return treesitter.setup({highlight = {enable = true}, indent = {enable = true}, matchup = {enable = true}, endwise = {enable = true}, event = {"BufReadPre", "BufNewFile"}, ensure_installed = "all", sync_install = false, additional_vim_regex_highlighting = false})
 end
-return {{"nvim-treesitter/nvim-treesitter", build = ":TSUpdate", dependencies = {"RRethy/nvim-treesitter-endwise"}, config = setup}}
+local function _3_()
+  return assoc_opts(vim.g, options)
+end
+local function _4_()
+  return treesitter.setup({highlight = {enable = true}, indent = {enable = true}, matchup = {enable = true}, endwise = {enable = true}, event = {"BufReadPre", "BufNewFile"}, ensure_installed = "all", sync_install = false, additional_vim_regex_highlighting = false})
+end
+return {{"nvim-treesitter/nvim-treesitter", build = ":TSUpdate", dependencies = {"RRethy/nvim-treesitter-endwise"}, init = _3_, config = _4_}}

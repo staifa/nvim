@@ -17,4 +17,5 @@
       (vim.keymap.set mode (from key) to {:noremap true :buffer bufnr}))))
 
 [{1 :lewis6991/gitsigns.nvim
+  :event [:BufReadPre :BufNewFile]
   :opts {:on_attach on-attach-fn}}]

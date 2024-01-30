@@ -12,10 +12,14 @@ if not vim.loop.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=latest", -- latest stable release
     lazypath
   })
 end
+
+local lazyopts = {
+  defaults = { lazy = true }
+}
 
 vim.opt.rtp:prepend(lazypath)
 vim.loader.enable()
@@ -25,7 +29,7 @@ require("lazy").setup({
     ft = "fennel",
     dependencies = { "norcalli/nvim.lua" } },
   { import = "plugins" }
-})
+}, lazyopts)
 
 require("settings")
 require("mappings")

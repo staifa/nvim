@@ -15,11 +15,21 @@
                      :endwise {:enable true}
                      ;; lazy loading
                      :event [:BufReadPre :BufNewFile]
-                     :ensure_installed maintained
+                     :ensure_installed :all
                      :sync_install false
                      :additional_vim_regex_highlighting false}))
 
 [{1 :nvim-treesitter/nvim-treesitter
   :build ":TSUpdate"
   :dependencies [:RRethy/nvim-treesitter-endwise]
-  :config setup}]
+  :init #(assoc-opts vim.g options)
+  :config #(treesitter.setup
+             {:highlight {:enable true}
+              :indent {:enable true}
+              :matchup {:enable true}
+              :endwise {:enable true}
+              ;; lazy loading
+              :event [:BufReadPre :BufNewFile]
+              :ensure_installed :all
+              :sync_install false
+              :additional_vim_regex_highlighting false})}]

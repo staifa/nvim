@@ -25,4 +25,4 @@ local function on_attach_fn(bufnr)
   end
   return nil
 end
-return {{"lewis6991/gitsigns.nvim", opts = {on_attach = on_attach_fn}}}
+return {{"lewis6991/gitsigns.nvim", event = {"BufReadPre", "BufNewFile"}, opts = {on_attach = on_attach_fn}}}

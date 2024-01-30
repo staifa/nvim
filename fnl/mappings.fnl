@@ -15,6 +15,6 @@
   (each [_ [from to desc] (ipairs mappings)]
     (vim.keymap.set :n from to {:noremap true :desc desc})))
 
-(vim.keymap.set [:n :v :i] :<esc> "<esc>:update<cr>" {:noremap true :silent true :desc ""})
+(vim.keymap.set [:n :v] :<esc> "<esc>:update<cr>" {:noremap true :silent true :desc ""})
 
 {}

@@ -46,5 +46,5 @@ do
     vim.keymap.set("n", from, to, {noremap = true, desc = desc})
   end
 end
-vim.keymap.set({"n", "v", "i"}, "<esc>", "<esc>:update<cr>", {noremap = true, silent = true, desc = ""})
+vim.keymap.set({"n", "v"}, "<esc>", "<esc>:update<cr>", {noremap = true, silent = true, desc = ""})
 return {}

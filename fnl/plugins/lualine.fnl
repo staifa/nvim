@@ -10,8 +10,6 @@
       (= message.status :end) ""
       "")))
 
-(lsp_connection)
-
 (local sections
   {:lualine_a [:branch]
    :lualine_b [:diff
@@ -31,12 +29,10 @@
    :lualine_y [:progress]
    :lualine_z [:location]})
 
-(fn setup []
-  (lualine.setup {:options {:component_separators {:right ""}
-                            :section_separators {:left "" :right ""}
-                            :theme :gruvbox}
-                  :sections sections
-                  :inactive_sections sections}))
-
 [{1 :nvim-lualine/lualine.nvim
-  :config setup}]
+  :lazy false
+  :opts {:options {:component_separators {:right ""}
+                   :section_separators {:left "" :right ""}
+                   :theme :gruvbox}
+         :sections sections
+         :inactive_sections sections}}]
