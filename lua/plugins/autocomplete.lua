@@ -12,7 +12,7 @@ local cmp_srcs
 local function _3_()
   return vim.api.nvim_list_bufs()
 end
-cmp_srcs = {{name = "nvim_lsp", group_index = 1}, {name = "conjure", group_index = 2}, {name = "buffer", group_index = 1, keyword_length = 5, max_item_count = 10, option = {get_bufnrs = _3_}}, {name = "luasnip", group_index = 2}}
+cmp_srcs = {{name = "luasnip_choice"}, {name = "nvim_lsp", group_index = 1}, {name = "conjure", group_index = 2}, {name = "buffer", group_index = 1, keyword_length = 5, max_item_count = 10, option = {get_bufnrs = _3_}}, {name = "luasnip", group_index = 2}}
 local function has_words_before()
   local _let_4_ = vim.api.nvim_win_get_cursor(0)
   local line = _let_4_[1]
@@ -62,4 +62,4 @@ local function _10_()
   end
   return cmp.setup({formatting = {format = format_kind, fields = {"kind", "abbr", "menu"}}, window = {completion = {winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None", col_offset = -3, side_padding = 0}}, view = {entries = {name = "custom", selection_order = "near_cursor"}}, mapping = mapping(cmp, ls), snippet = {expand = _11_}, sources = cmp.config.sources(cmp_srcs)})
 end
-return {{"hrsh7th/nvim-cmp", event = {"InsertEnter", "CmdlineEnter"}, dependencies = {"hrsh7th/cmp-buffer", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-cmdline", "PaterJason/cmp-conjure", "onsails/lspkind.nvim", "L3MON4D3/LuaSnip", "saadparwaiz1/cmp_luasnip"}, config = _10_}}
+return {{"hrsh7th/nvim-cmp", event = {"InsertEnter", "CmdlineEnter"}, dependencies = {"hrsh7th/cmp-buffer", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-cmdline", "onsails/lspkind.nvim", "L3MON4D3/LuaSnip", "saadparwaiz1/cmp_luasnip"}, config = _10_}, {"PaterJason/cmp-conjure", dependencies = {"hrsh7th/nvim-cmp"}, ft = {"clojure", "fennel", "lua"}}, {"L3MON4D3/cmp-luasnip-choice", opts = {auto_open = true}}}

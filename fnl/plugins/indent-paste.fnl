@@ -1,1 +1,2 @@
-[:ku1ik/vim-pasta]
+[{1 :ku1ik/vim-pasta
+  :event :VeryLazy}]

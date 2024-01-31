@@ -1,4 +1,4 @@
 [{1 :echasnovski/mini.align
-  :event [:BufReadPre :BufNewFile]
+  :event :VeryLazy
   :version false
   :opts {}}]

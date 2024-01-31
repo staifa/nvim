@@ -1,1 +1,2 @@
-[:RRethy/vim-illuminate]
+[{1 :RRethy/vim-illuminate
+  :event :VeryLazy}]

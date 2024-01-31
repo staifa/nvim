@@ -5,7 +5,8 @@
 (local cmp (autoload :cmp))
 
 (local cmp-srcs
-  [{:name :nvim_lsp :group_index 1}
+  [{:name :luasnip_choice}
+   {:name :nvim_lsp :group_index 1}
    {:name :conjure :group_index 2}
    {:name :buffer
     :group_index 1
@@ -34,13 +35,13 @@
                            (ls.expand_or_jumpable) (ls.expand_or_jump)
                            (has-words-before) (cmp.complete)
                            :else (fallback)))
-                       {1 :i 2 :s})
+                       [:i :s])
    :<S-Tab> (cmp.mapping (fn [fallback]
                            (if
                              (cmp.visible) (cmp.select_prev_item)
                              (ls.jumpable -1) (ls.jump -1)
                              :else (fallback)))
-                         {1 :i 2 :s})})
+                         [:i :s])})
 
 (fn format-kind [entry vim_item]
   (let [format-fn (kind.cmp_format {:mode :symbol_text
@@ -57,7 +58,6 @@
   :dependencies [:hrsh7th/cmp-buffer
                  :hrsh7th/cmp-nvim-lsp
                  :hrsh7th/cmp-cmdline
-                 :PaterJason/cmp-conjure
                  :onsails/lspkind.nvim
                  :L3MON4D3/LuaSnip
                  :saadparwaiz1/cmp_luasnip]
@@ -79,4 +79,11 @@
                          :view {:entries {:name :custom :selection_order :near_cursor}}
                          :mapping (mapping cmp ls)
                          :snippet {:expand (fn [args] (ls.lsp_expand args.body))}
-                         :sources (cmp.config.sources cmp-srcs)}))}]
+                         :sources (cmp.config.sources cmp-srcs)}))}
+ {1 :PaterJason/cmp-conjure
+  :dependencies [:hrsh7th/nvim-cmp]
+  :ft [:clojure :fennel :lua]}
+ {1 :L3MON4D3/cmp-luasnip-choice
+  ; :depenedencies [:L3MON4D3/LuaSnip]
+  ; :event :InsertNode
+  :opts {:auto_open true}}]

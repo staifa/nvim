@@ -1,4 +1,4 @@
 [{1 :echasnovski/mini.surround
-  :event [:BufReadPre :BufNewFile]
+  :event :VeryLazy
   :version :*
   :opts {:mappings {:add :s}}}]

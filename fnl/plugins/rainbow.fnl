@@ -1,1 +1,2 @@
-[:HiPhish/rainbow-delimiters.nvim]
+[{1 :HiPhish/rainbow-delimiters.nvim
+  :lazy false}]

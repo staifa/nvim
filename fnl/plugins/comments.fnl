@@ -1,3 +1,3 @@
 [{1 :numToStr/Comment.nvim
-  :keys [:gc :gb]
+  :keys [:gc :gcc :gb :gbc]
   :opts {}}]
