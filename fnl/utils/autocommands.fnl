@@ -13,19 +13,26 @@
                  (assoc-opts vim.wo {:wrap true})))})
 
 ;; disable diagnostics and parinfer in snippets
-(api.nvim_create_autocmd
-  [:ModeChanged]
-  {:pattern "*:s"
-   :callback (fn []
-               (when (ls.in_snippet)
-                 (parinfer.detach-current-buf!)
-                 (vim.diagnostic.disable)))})
-
+; (api.nvim_create_autocmd
+;   [:ModeChanged]
+;   {:pattern "*:s"
+;    :callback (fn []
+;                (when (ls.in_snippet)
+;                  (parinfer.detach-current-buf!)
+;                  (vim.diagnostic.disable)))})
+;
 ;; enable diagnostics and parinfer in snippets
-(api.nvim_create_autocmd
-  [:ModeChanged]
-  {:pattern "[is]:n"
-   :callback (fn []
-               (when (ls.in_snippet)
-                 (parinfer.attach-current-buf!)
-                 (vim.diagnostic.enable)))})
+; (api.nvim_create_autocmd
+;   [:ModeChanged]
+;   {:pattern "[is]:n"
+;    :callback (fn []
+;                (when (ls.in_snippet)
+;                  (parinfer.attach-current-buf!)
+;                  (vim.diagnostic.enable)))})
+;
+; (api.nvim_create_autocmd
+;   [:CursorHold :CursorHoldI]
+;   {group = vim.api.nvim_create_augroup("code_action_sign", { clear = true }),
+;     callback = function()
+;     require('code_action_utils').code_action_listener()})
+    ; end,})

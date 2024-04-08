@@ -1,3 +1,3 @@
 [{1 :andymass/vim-matchup
-  :event :VeryLazy
+  :lazy false
   :init #(set vim.g.matchup_matchparen_offscreen {:method :popup})}]

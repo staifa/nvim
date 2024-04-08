@@ -57,6 +57,9 @@
 
 (assoc-opts vim.o options)
 
-(set vim.g.python3_host_prog "/home/staifa/.pyenv/versions/neovim3/bin/python")
+(local global-options
+  {:python3_host_prog "/home/staifa/.pyenv/versions/neovim3/bin/python"})
+
+(assoc-opts vim.g global-options)
 
 {}

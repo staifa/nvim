@@ -1,5 +1,6 @@
 (local {: autoload} (require :nfnl.module))
 (local api vim.api)
+(local vfn vim.fn)
 (local lsp-format (autoload :lsp-format))
 (local lsp (autoload :lspconfig))
 (local cmplsp (autoload :cmp_nvim_lsp))
@@ -10,10 +11,10 @@
         warn  (.. prefix :SignWarn)
         info  (.. prefix :SignInfo)
         hint  (.. prefix :SignHint)]
-    (vim.fn.sign_define error {:text "" :texthl error})
-    (vim.fn.sign_define warn  {:text "" :texthl warn})
-    (vim.fn.sign_define info  {:text "" :texthl info})
-    (vim.fn.sign_define hint  {:text "" :texthl hint})))
+    (vfn.sign_define error {:text "" :texthl error})
+    (vfn.sign_define warn  {:text "" :texthl warn})
+    (vfn.sign_define info  {:text "" :texthl info})
+    (vfn.sign_define hint  {:text "" :texthl hint})))
 
 (define-signs :Diagnostic)
 
@@ -29,35 +30,37 @@
                   [:n :<leader>lf vim.lsp.buf.format]
                   [:n :<leader>w vim.diagnostic.goto_next]
                   [:n :<leader>W vim.diagnostic.goto_prev]
-                  [:n :<C-a> vim.lsp.buf.code_action]
-                  [:v :<C-a> #(vim.lsp.buf.code_action
-                                {:range {:start (api.nvim_buf_get_mark bufnr "<")
-                                         :end (api.nvim_buf_get_mark bufnr ">")}})]
-                  [:n :<C-i> tb.lsp_implementations]
-                  [:n :<M-r> tb.lsp_references]
-                  [:n :<M-d> tb.diagnostics]]]
+                  [:n :<leader>a vim.lsp.buf.code_action]
+                  [:v :<leader>a #(vim.lsp.buf.code_action
+                                    {:range {:start (api.nvim_buf_get_mark bufnr "<")
+                                             :end (api.nvim_buf_get_mark bufnr ">")}})]
+                  [:n :<leader>i tb.lsp_implementations]
+                  [:n :<leader>r tb.lsp_references]
+                  [:n :<leader>d tb.diagnostics]]]
     (each [_ [mode from to] (ipairs mappings)]
       (vim.keymap.set mode from to {:noremap true :buffer bufnr}))
     (lsp-format.on_attach client)))
 
+(local handlers {:textDocument/publishDiagnostics
+                 (vim.lsp.with
+                   vim.lsp.diagnostic.on_publish_diagnostics
+                   {:severity_sort true
+                    :update_in_insert true
+                    :underline true
+                    :virtual_text false})
+                 :textDocument/hover
+                 (vim.lsp.with
+                   vim.lsp.handlers.hover
+                   {:border :single})
+                 :textDocument/signatureHelp
+                 (vim.lsp.with
+                   vim.lsp.handlers.signature_help
+                   {:border :single})})
+
+(local capabilities (cmplsp.default_capabilities))
+
 (fn clj-setup []
-  (let [handlers {:textDocument/publishDiagnostics
-                  (vim.lsp.with
-                    vim.lsp.diagnostic.on_publish_diagnostics
-                    {:severity_sort true
-                     :update_in_insert true
-                     :underline true
-                     :virtual_text false})
-                  :textDocument/hover
-                  (vim.lsp.with
-                    vim.lsp.handlers.hover
-                    {:border :single})
-                  :textDocument/signatureHelp
-                  (vim.lsp.with
-                    vim.lsp.handlers.signature_help
-                    {:border :single})}
-        capabilities (cmplsp.default_capabilities)
-        before_init (fn [params]
+  (let [before_init (fn [params]
                       (set params.workDoneToken :1))]
     (lsp.clojure_lsp.setup {:on_attach on-attach-fn
                             :handlers handlers
@@ -76,7 +79,13 @@
 (fn lua-setup []
   (lsp.lua_ls.setup {:settings {:Lua {:diagnostics {:globals [:vim]}}}}))
 
+(fn fennel-setup []
+  (lsp.fennel_ls.setup {:on-attach on-attach-fn
+                        :handlers handlers}))
+
 [{1 :neovim/nvim-lspconfig
+  :event [:BufReadPost :BufNewFile]
+  :cmd [:LspInfo :LspInstall :LspUninstall]
   :dependencies [{1 :lukas-reineke/lsp-format.nvim
                   :opts {}}
                  {1 :williamboman/mason.nvim
@@ -84,4 +93,4 @@
                  {1 :williamboman/mason-lspconfig.nvim
                   :opts {:ensure_installed [:clojure_lsp
                                             :lua_ls]}}]
-  :config #(do (clj-setup) (lua-setup) (lsp.fennel_ls.setup {}))}]
+  :config #(do (clj-setup) (lua-setup) (fennel-setup))}]

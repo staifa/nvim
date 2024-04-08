@@ -36,13 +36,13 @@
   (telescope.load_extension :lazygit))
 
 (fn setup-keys []
-  (let [mappings {:f builtin.find_files
+  (let [mappings {:n builtin.find_files
                   :j builtin.live_grep
-                  :. builtin.buffers
+                  :b builtin.buffers
                   :h builtin.help_tags
-                  :l builtin.registers
-                  :k builtin.resume}
-        from #(.. :<C- $1 :>)]
+                  :r builtin.registers
+                  :c builtin.resume}
+        from #(.. :<M- $1 :>)]
     (icollect [key cmd (pairs mappings)]
       [(from key) cmd])))
 
@@ -59,14 +59,11 @@
  {1 :debugloop/telescope-undo.nvim
   :dependencies [{1 "nvim-telescope/telescope.nvim"
                   :dependencies [:nvim-lua/plenary.nvim]}]
-  :keys [{1 "<leader>u"
-          2 "<cmd>Telescope undo<cr>"
-          3 {:desc "undo history"}}]
+  :keys [[:<M-u> "<cmd>Telescope undo<cr>" {:desc "undo history"}]]
   :config (fn [_ opts] (telescope.setup opts) (telescope.load_extension :undo))}
  {1 :nvim-telescope/telescope-file-browser.nvim
   :dependencies [{1 :nvim-telescope/telescope.nvim
                   :dependencies [:nvim-lua/plenary.nvim]}]
-  :keys [{1 "<leader>f"
-          2 "<cmd>Telescope file_browser<cr>"
-          3 {:desc "file browser" :noremap true}}]
+  :keys [[:<M-d> ":Telescope file_browser<cr>" {:desc "file browser"
+                                                :noremap true}]]
   :config (fn [_ opts] (telescope.setup opts) (telescope.load_extension :file_browser))}]

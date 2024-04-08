@@ -4,6 +4,7 @@
 
 [{1 :rmagatti/auto-session
   :lazy false
+  :priority 1
   :opts {:log_level :error
          :auto_session_suppress_dirs ["~/" "~/Projects" "~/Downloads" "/"]
          :auto_session_use_git_branch false

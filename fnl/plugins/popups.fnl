@@ -1,3 +1,3 @@
 [{1 :nvim-lua/popup.nvim
-  :lazy false  
+  :event :VeryLazy
   :dependencies [:nvim-lua/plenary.nvim]}]

@@ -3,6 +3,8 @@
 (local ls (autoload :luasnip))
 (local kind (autoload :lspkind))
 (local cmp (autoload :cmp))
+; (local {: default_capabilities} (autoload :cmp_nvim_lsp))
+; (local lspconfig (autoload :lspconfig))
 
 (local cmp-srcs
   [{:name :luasnip_choice}
@@ -60,7 +62,9 @@
                  :hrsh7th/cmp-cmdline
                  :onsails/lspkind.nvim
                  :L3MON4D3/LuaSnip
-                 :saadparwaiz1/cmp_luasnip]
+                 :saadparwaiz1/cmp_luasnip
+                 {1 :PaterJason/cmp-conjure
+                  :ft [:clojure :fennel :lua]}]
   :config #(do
              (cmp.setup.cmdline ":" {:sources (cmp.config.sources [{:name :path}
                                                                    {:name :cmdline}])
@@ -80,10 +84,6 @@
                          :mapping (mapping cmp ls)
                          :snippet {:expand (fn [args] (ls.lsp_expand args.body))}
                          :sources (cmp.config.sources cmp-srcs)}))}
- {1 :PaterJason/cmp-conjure
-  :dependencies [:hrsh7th/nvim-cmp]
-  :ft [:clojure :fennel :lua]}
  {1 :L3MON4D3/cmp-luasnip-choice
-  ; :depenedencies [:L3MON4D3/LuaSnip]
-  ; :event :InsertNode
+  :dependencies [:L3MON4D3/LuaSnip]
   :opts {:auto_open true}}]

@@ -1,9 +1,16 @@
 (local {: autoload} (require :nfnl.module))
-(local api vim.api)
-(local core (autoload :nfnl.core))
+(local {: assoc : merge} (autoload :nfnl.core))
 
 (fn assoc-opts [table options]
   (each [option value (pairs options)]
-    (core.assoc table option value)))
+    (assoc table option value)))
 
-{: assoc-opts}
+(local favorite-langs [:clojure :fennel :lua])
+
+(fn active-langs [...]
+  "Returns merge of internal and provid langs"
+  (if ...
+    (merge favorite-langs ...)
+    favorite-langs))
+
+{: assoc-opts : active-langs}
