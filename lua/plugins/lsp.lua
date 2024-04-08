@@ -2,6 +2,7 @@
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local api = vim.api
+local vfn = vim.fn
 local lsp_format = autoload("lsp-format")
 local lsp = autoload("lspconfig")
 local cmplsp = autoload("cmp_nvim_lsp")
@@ -10,10 +11,10 @@ local function define_signs(prefix)
   local warn = (prefix .. "SignWarn")
   local info = (prefix .. "SignInfo")
   local hint = (prefix .. "SignHint")
-  vim.fn.sign_define(error, {text = "\239\129\151", texthl = error})
-  vim.fn.sign_define(warn, {text = "\239\129\177", texthl = warn})
-  vim.fn.sign_define(info, {text = "\239\129\154", texthl = info})
-  return vim.fn.sign_define(hint, {text = "\239\129\153", texthl = hint})
+  vfn.sign_define(error, {text = "\239\129\151", texthl = error})
+  vfn.sign_define(warn, {text = "\239\129\177", texthl = warn})
+  vfn.sign_define(info, {text = "\239\129\154", texthl = info})
+  return vfn.sign_define(hint, {text = "\239\129\153", texthl = hint})
 end
 define_signs("Diagnostic")
 local function on_attach_fn(client, bufnr)
@@ -22,7 +23,7 @@ local function on_attach_fn(client, bufnr)
   local function _2_()
     return vim.lsp.buf.code_action({range = {start = api.nvim_buf_get_mark(bufnr, "<"), ["end"] = api.nvim_buf_get_mark(bufnr, ">")}})
   end
-  mappings = {{"n", "gd", vim.lsp.buf.definition}, {"n", "K", vim.lsp.buf.hover}, {"n", "<leader>ld", vim.lsp.buf.declaration}, {"n", "<leader>lt", vim.lsp.buf.type_definition}, {"n", "<leader>lh", vim.lsp.buf.signature_help}, {"n", "<leader>r", vim.lsp.buf.rename}, {"n", "<leader>lq", vim.diagnostic.setloclist}, {"n", "<leader>lf", vim.lsp.buf.format}, {"n", "<leader>w", vim.diagnostic.goto_next}, {"n", "<leader>W", vim.diagnostic.goto_prev}, {"n", "<C-a>", vim.lsp.buf.code_action}, {"v", "<C-a>", _2_}, {"n", "<C-i>", tb.lsp_implementations}, {"n", "<M-r>", tb.lsp_references}, {"n", "<M-d>", tb.diagnostics}}
+  mappings = {{"n", "gd", vim.lsp.buf.definition}, {"n", "K", vim.lsp.buf.hover}, {"n", "<leader>ld", vim.lsp.buf.declaration}, {"n", "<leader>lt", vim.lsp.buf.type_definition}, {"n", "<leader>lh", vim.lsp.buf.signature_help}, {"n", "<leader>r", vim.lsp.buf.rename}, {"n", "<leader>lq", vim.diagnostic.setloclist}, {"n", "<leader>lf", vim.lsp.buf.format}, {"n", "<leader>w", vim.diagnostic.goto_next}, {"n", "<leader>W", vim.diagnostic.goto_prev}, {"n", "<leader>a", vim.lsp.buf.code_action}, {"v", "<leader>a", _2_}, {"n", "<leader>i", tb.lsp_implementations}, {"n", "<leader>r", tb.lsp_references}, {"n", "<leader>d", tb.diagnostics}}
   for _, _3_ in ipairs(mappings) do
     local _each_4_ = _3_
     local mode = _each_4_[1]
@@ -32,9 +33,9 @@ local function on_attach_fn(client, bufnr)
   end
   return lsp_format.on_attach(client)
 end
+local handlers = {["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {severity_sort = true, update_in_insert = true, underline = true, virtual_text = false}), ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = "single"}), ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = "single"})}
+local capabilities = cmplsp.default_capabilities()
 local function clj_setup()
-  local handlers = {["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {severity_sort = true, update_in_insert = true, underline = true, virtual_text = false}), ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = "single"}), ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = "single"})}
-  local capabilities = cmplsp.default_capabilities()
   local before_init
   local function _5_(params)
     params.workDoneToken = "1"
@@ -47,9 +48,12 @@ vim.diagnostic.config({virtual_text = true, severity_sort = true, float = {heade
 local function lua_setup()
   return lsp.lua_ls.setup({settings = {Lua = {diagnostics = {globals = {"vim"}}}}})
 end
+local function fennel_setup()
+  return lsp.fennel_ls.setup({["on-attach"] = on_attach_fn, handlers = handlers})
+end
 local function _6_()
   clj_setup()
   lua_setup()
-  return lsp.fennel_ls.setup({})
+  return fennel_setup()
 end
-return {{"neovim/nvim-lspconfig", dependencies = {{"lukas-reineke/lsp-format.nvim", opts = {}}, {"williamboman/mason.nvim", opts = {}}, {"williamboman/mason-lspconfig.nvim", opts = {ensure_installed = {"clojure_lsp", "lua_ls"}}}}, config = _6_}}
+return {{"neovim/nvim-lspconfig", event = {"BufReadPost", "BufNewFile"}, cmd = {"LspInfo", "LspInstall", "LspUninstall"}, dependencies = {{"lukas-reineke/lsp-format.nvim", opts = {}}, {"williamboman/mason.nvim", opts = {}}, {"williamboman/mason-lspconfig.nvim", opts = {ensure_installed = {"clojure_lsp", "lua_ls"}}}}, config = _6_}}

@@ -6,4 +6,4 @@ local function _2_()
   return lens.search_session()
 end
 vim.keymap.set("n", "<C-s>", _2_)
-return {{"rmagatti/auto-session", opts = {log_level = "error", auto_session_suppress_dirs = {"~/", "~/Projects", "~/Downloads", "/"}, session_lens = {buftypes_to_ignore = {"nofile", "terminal", "help"}, load_on_setup = true, theme_conf = {border = true}, previewer = false}, auto_session_use_git_branch = false, auto_session_enable_last_session = false}, lazy = false}}
+return {{"rmagatti/auto-session", priority = 1, opts = {log_level = "error", auto_session_suppress_dirs = {"~/", "~/Projects", "~/Downloads", "/"}, session_lens = {buftypes_to_ignore = {"nofile", "terminal", "help"}, load_on_setup = true, theme_conf = {border = true}, previewer = false}, auto_session_enable_last_session = false, auto_session_use_git_branch = false}, lazy = false}}

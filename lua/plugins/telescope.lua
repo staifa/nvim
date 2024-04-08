@@ -14,10 +14,10 @@ local function setup()
   return telescope.load_extension("lazygit")
 end
 local function setup_keys()
-  local mappings = {f = builtin.find_files, j = builtin.live_grep, ["."] = builtin.buffers, h = builtin.help_tags, l = builtin.registers, k = builtin.resume}
+  local mappings = {n = builtin.find_files, j = builtin.live_grep, b = builtin.buffers, h = builtin.help_tags, r = builtin.registers, c = builtin.resume}
   local from
   local function _2_(_241)
-    return ("<C-" .. _241 .. ">")
+    return ("<M-" .. _241 .. ">")
   end
   from = _2_
   local tbl_17_auto = {}
@@ -40,4 +40,4 @@ local function _5_(_, opts)
   telescope.setup(opts)
   return telescope.load_extension("file_browser")
 end
-return {{"nvim-telescope/telescope.nvim", dependencies = {"nvim-lua/plenary.nvim", "nvim-lua/popup.nvim", "tsakirist/telescope-lazy.nvim", "nvim-telescope/telescope-ui-select.nvim", "debugloop/telescope-undo.nvim", {"nvim-telescope/telescope-fzf-native.nvim", build = "make"}}, keys = setup_keys, config = setup}, {"debugloop/telescope-undo.nvim", dependencies = {{"nvim-telescope/telescope.nvim", dependencies = {"nvim-lua/plenary.nvim"}}}, keys = {{"<leader>u", "<cmd>Telescope undo<cr>", {desc = "undo history"}}}, config = _4_}, {"nvim-telescope/telescope-file-browser.nvim", dependencies = {{"nvim-telescope/telescope.nvim", dependencies = {"nvim-lua/plenary.nvim"}}}, keys = {{"<leader>f", "<cmd>Telescope file_browser<cr>", {desc = "file browser", noremap = true}}}, config = _5_}}
+return {{"nvim-telescope/telescope.nvim", dependencies = {"nvim-lua/plenary.nvim", "nvim-lua/popup.nvim", "tsakirist/telescope-lazy.nvim", "nvim-telescope/telescope-ui-select.nvim", "debugloop/telescope-undo.nvim", {"nvim-telescope/telescope-fzf-native.nvim", build = "make"}}, keys = setup_keys, config = setup}, {"debugloop/telescope-undo.nvim", dependencies = {{"nvim-telescope/telescope.nvim", dependencies = {"nvim-lua/plenary.nvim"}}}, keys = {{"<M-u>", "<cmd>Telescope undo<cr>", {desc = "undo history"}}}, config = _4_}, {"nvim-telescope/telescope-file-browser.nvim", dependencies = {{"nvim-telescope/telescope.nvim", dependencies = {"nvim-lua/plenary.nvim"}}}, keys = {{"<M-d>", ":Telescope file_browser<cr>", {desc = "file browser", noremap = true}}}, config = _5_}}

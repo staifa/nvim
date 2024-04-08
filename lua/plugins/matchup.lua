@@ -3,4 +3,4 @@ local function _1_()
   vim.g.matchup_matchparen_offscreen = {method = "popup"}
   return nil
 end
-return {{"andymass/vim-matchup", event = "VeryLazy", init = _1_}}
+return {{"andymass/vim-matchup", init = _1_, lazy = false}}

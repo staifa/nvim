@@ -13,22 +13,4 @@ local function _3_(args)
     return nil
   end
 end
-api.nvim_create_autocmd({"User"}, {pattern = "TelescopePreviewerLoaded", callback = _3_})
-local function _5_()
-  if ls.in_snippet() then
-    parinfer["detach-current-buf!"]()
-    return vim.diagnostic.disable()
-  else
-    return nil
-  end
-end
-api.nvim_create_autocmd({"ModeChanged"}, {pattern = "*:s", callback = _5_})
-local function _7_()
-  if ls.in_snippet() then
-    parinfer["attach-current-buf!"]()
-    return vim.diagnostic.enable()
-  else
-    return nil
-  end
-end
-return api.nvim_create_autocmd({"ModeChanged"}, {pattern = "[is]:n", callback = _7_})
+return api.nvim_create_autocmd({"User"}, {pattern = "TelescopePreviewerLoaded", callback = _3_})
