@@ -79,6 +79,12 @@
 (fn lua-setup []
   (lsp.lua_ls.setup {:settings {:Lua {:diagnostics {:globals [:vim]}}}}))
 
+(fn python-setup []
+  (lsp.pyright.setup {:capabilities capabilities}))
+
+(fn php-setup []
+  (lsp.phpactor.setup {:capabilities capabilities}))
+
 (fn fennel-setup []
   (lsp.fennel_ls.setup {:on-attach on-attach-fn
                         :handlers handlers}))
@@ -93,4 +99,4 @@
                  {1 :williamboman/mason-lspconfig.nvim
                   :opts {:ensure_installed [:clojure_lsp
                                             :lua_ls]}}]
-  :config #(do (clj-setup) (lua-setup) (fennel-setup))}]
+  :config #(do (clj-setup) (lua-setup) (fennel-setup) (python-setup) (php-setup))}]

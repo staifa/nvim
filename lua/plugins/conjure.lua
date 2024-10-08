@@ -10,4 +10,4 @@ local function setup(_, _opts)
   return mapping["on-filetype"]()
 end
 local options = {["conjure#highlight#enabled"] = true}
-return {{"Olical/conjure", dependencies = {"PaterJason/cmp-conjure"}, ft = {"clojure", "fennel", "lua"}, config = setup, init = assoc_opts(vim.g, options)}}
+return {{"Olical/conjure", dependencies = {"PaterJason/cmp-conjure"}, ft = {"clojure", "fennel", "lua", "python"}, config = setup, init = assoc_opts(vim.g, options)}}

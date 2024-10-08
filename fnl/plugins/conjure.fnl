@@ -12,6 +12,6 @@
 
 [{1 :Olical/conjure
   :dependencies [:PaterJason/cmp-conjure]
-  :ft [:clojure :fennel :lua]
+  :ft [:clojure :fennel :lua :python]
   :config setup
   :init (assoc-opts vim.g options)}]
