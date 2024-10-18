@@ -28,8 +28,8 @@
                   [:n :<leader>r vim.lsp.buf.rename]
                   [:n :<leader>lq vim.diagnostic.setloclist]
                   [:n :<leader>lf vim.lsp.buf.format]
-                  [:n :<leader>w vim.diagnostic.goto_next]
-                  [:n :<leader>W vim.diagnostic.goto_prev]
+                  [:n :<F3> vim.diagnostic.goto_next]
+                  [:n :<F4> vim.diagnostic.goto_prev]
                   [:n :<leader>a vim.lsp.buf.code_action]
                   [:v :<leader>a #(vim.lsp.buf.code_action
                                     {:range {:start (api.nvim_buf_get_mark bufnr "<")
@@ -83,10 +83,13 @@
   (lsp.pyright.setup {:capabilities capabilities}))
 
 (fn php-setup []
-  (lsp.phpactor.setup {:capabilities capabilities}))
+  (lsp.phpactor.setup {:capabilities capabilities
+                       :on_attach on-attach-fn
+                       :handlers handlers}))
 
 (fn fennel-setup []
   (lsp.fennel_ls.setup {:on-attach on-attach-fn
+                        :capabilities capabilities
                         :handlers handlers}))
 
 [{1 :neovim/nvim-lspconfig

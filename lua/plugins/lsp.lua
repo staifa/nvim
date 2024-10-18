@@ -23,7 +23,7 @@ local function on_attach_fn(client, bufnr)
   local function _2_()
     return vim.lsp.buf.code_action({range = {start = api.nvim_buf_get_mark(bufnr, "<"), ["end"] = api.nvim_buf_get_mark(bufnr, ">")}})
   end
-  mappings = {{"n", "gd", vim.lsp.buf.definition}, {"n", "K", vim.lsp.buf.hover}, {"n", "<leader>ld", vim.lsp.buf.declaration}, {"n", "<leader>lt", vim.lsp.buf.type_definition}, {"n", "<leader>lh", vim.lsp.buf.signature_help}, {"n", "<leader>r", vim.lsp.buf.rename}, {"n", "<leader>lq", vim.diagnostic.setloclist}, {"n", "<leader>lf", vim.lsp.buf.format}, {"n", "<leader>w", vim.diagnostic.goto_next}, {"n", "<leader>W", vim.diagnostic.goto_prev}, {"n", "<leader>a", vim.lsp.buf.code_action}, {"v", "<leader>a", _2_}, {"n", "<leader>i", tb.lsp_implementations}, {"n", "<leader>r", tb.lsp_references}, {"n", "<leader>d", tb.diagnostics}}
+  mappings = {{"n", "gd", vim.lsp.buf.definition}, {"n", "K", vim.lsp.buf.hover}, {"n", "<leader>ld", vim.lsp.buf.declaration}, {"n", "<leader>lt", vim.lsp.buf.type_definition}, {"n", "<leader>lh", vim.lsp.buf.signature_help}, {"n", "<leader>r", vim.lsp.buf.rename}, {"n", "<leader>lq", vim.diagnostic.setloclist}, {"n", "<leader>lf", vim.lsp.buf.format}, {"n", "<F3>", vim.diagnostic.goto_next}, {"n", "<F4>", vim.diagnostic.goto_prev}, {"n", "<leader>a", vim.lsp.buf.code_action}, {"v", "<leader>a", _2_}, {"n", "<leader>i", tb.lsp_implementations}, {"n", "<leader>r", tb.lsp_references}, {"n", "<leader>d", tb.diagnostics}}
   for _, _3_ in ipairs(mappings) do
     local mode = _3_[1]
     local from = _3_[2]
@@ -51,10 +51,10 @@ local function python_setup()
   return lsp.pyright.setup({capabilities = capabilities})
 end
 local function php_setup()
-  return lsp.phpactor.setup({capabilities = capabilities})
+  return lsp.phpactor.setup({capabilities = capabilities, on_attach = on_attach_fn, handlers = handlers})
 end
 local function fennel_setup()
-  return lsp.fennel_ls.setup({["on-attach"] = on_attach_fn, handlers = handlers})
+  return lsp.fennel_ls.setup({["on-attach"] = on_attach_fn, capabilities = capabilities, handlers = handlers})
 end
 local function _5_()
   clj_setup()
