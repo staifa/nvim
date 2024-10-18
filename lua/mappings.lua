@@ -39,10 +39,9 @@ do
   end
   mappings = {{"gn", _1_, "Switch to next buffer"}, {"gp", _2_, "Switch to previous buffer"}, {"gx", _3_, "Close buffer"}, {"gX", _4_, "Close all buffers except the current one"}, {"<Backspace>", _5_, "Clear highlights"}, {"<space>", "a<space><Esc>", "Insert space in normal mode"}, {"to", _6_, "Open new tab"}, {"tn", _7_, "Next tab"}, {"tp", _8_, "Previous tab"}, {"tx", _9_, "Close tab"}, {"qw", _10_, "Save all buffers and exit"}, {"qe", _11_, "Close buffer"}, {"qq", _12_, "Exit"}}
   for _, _13_ in ipairs(mappings) do
-    local _each_14_ = _13_
-    local from = _each_14_[1]
-    local to = _each_14_[2]
-    local desc = _each_14_[3]
+    local from = _13_[1]
+    local to = _13_[2]
+    local desc = _13_[3]
     vim.keymap.set("n", from, to, {noremap = true, desc = desc})
   end
 end

@@ -20,17 +20,17 @@ local function setup_keys()
     return ("<M-" .. _241 .. ">")
   end
   from = _2_
-  local tbl_17_auto = {}
-  local i_18_auto = #tbl_17_auto
+  local tbl_21_auto = {}
+  local i_22_auto = 0
   for key, cmd in pairs(mappings) do
-    local val_19_auto = {from(key), cmd}
-    if (nil ~= val_19_auto) then
-      i_18_auto = (i_18_auto + 1)
-      do end (tbl_17_auto)[i_18_auto] = val_19_auto
+    local val_23_auto = {from(key), cmd}
+    if (nil ~= val_23_auto) then
+      i_22_auto = (i_22_auto + 1)
+      tbl_21_auto[i_22_auto] = val_23_auto
     else
     end
   end
-  return tbl_17_auto
+  return tbl_21_auto
 end
 local function _4_(_, opts)
   telescope.setup(opts)

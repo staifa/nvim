@@ -4,4 +4,4 @@ local function _1_()
   vim.o.timeoutlen = 300
   return nil
 end
-return {"folke/which-key.nvim", init = _1_, opts = {}, lazy = false}
+return {"folke/which-key.nvim", init = _1_, opts = {}, keys = {{"<leader><leader>", ":lua require('which-key').show({ global = false })<CR>", {desc = "Buffer Local Keymaps (which-key)"}}}, lazy = false}
