@@ -17,7 +17,7 @@ local function has_words_before()
   local _let_4_ = vim.api.nvim_win_get_cursor(0)
   local line = _let_4_[1]
   local col = _let_4_[2]
-  return ((col ~= 0) and (((vim.api.nvim_buf_get_lines(0, (line - 1), line, true))[1]):sub(col, col):match("%s") == nil))
+  return ((col ~= 0) and (vim.api.nvim_buf_get_lines(0, (line - 1), line, true)[1]:sub(col, col):match("%s") == nil))
 end
 local function mapping(cmp0, ls0)
   local function _5_(fallback)
@@ -44,7 +44,7 @@ local function mapping(cmp0, ls0)
       return nil
     end
   end
-  return {["<C-p>"] = cmp0.mapping.select_prev_item(), ["<C-n>"] = cmp0.mapping.select_next_item(), ["<C-u>"] = cmp0.mapping.scroll_docs(( - 4)), ["<C-d>"] = cmp0.mapping.scroll_docs(4), ["<C-Space>"] = cmp0.mapping.complete(), ["<C-e>"] = cmp0.mapping.close(), ["<CR>"] = cmp0.mapping.confirm({behavior = cmp0.ConfirmBehavior.Insert, select = true}), ["<Tab>"] = cmp0.mapping(_5_, {"i", "s"}), ["<S-Tab>"] = cmp0.mapping(_7_, {"i", "s"})}
+  return {["<C-p>"] = cmp0.mapping.select_prev_item(), ["<C-n>"] = cmp0.mapping.select_next_item(), ["<C-u>"] = cmp0.mapping.scroll_docs(( - 4)), ["<C-d>"] = cmp0.mapping.scroll_docs(4), ["<C-Space>"] = cmp0.mapping.complete(), ["<C-e>"] = cmp0.mapping.close(), ["<CR>"] = cmp0.mapping.confirm({behavior = cmp0.ConfirmBehavior.Insert, select = true}), ["<C-Tab>"] = cmp0.mapping(_5_, {"i", "s"}), ["<S-Tab>"] = cmp0.mapping(_7_, {"i", "s"})}
 end
 local function format_kind(entry, vim_item)
   local format_fn = kind.cmp_format({mode = "symbol_text", maxwidth = 50, ellipsis_char = "...", show_labelDetails = true})
