@@ -1,2 +1,5 @@
 -- [nfnl] Compiled from fnl/plugins/parinfer.fnl by https://github.com/Olical/nfnl, do not edit.
-return {{"harrygallagher4/nvim-parinfer-rust", opts = {managed = true, trail_highlight = false}, lazy = false}}
+local function _1_()
+  return true
+end
+return {"eraserhd/parinfer-rust", build = "cargo build --release", config = _1_}

@@ -1,2 +1,3 @@
-{1 :RRethy/vim-illuminate
- :event :VeryLazy}
+(import-macros {: tx} :config.macros)
+
+(tx "RRethy/vim-illuminate" {:event "VeryLazy"})

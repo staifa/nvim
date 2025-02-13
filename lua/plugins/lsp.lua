@@ -1,66 +1,70 @@
 -- [nfnl] Compiled from fnl/plugins/lsp.fnl by https://github.com/Olical/nfnl, do not edit.
-local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
-local api = vim.api
-local vfn = vim.fn
-local lsp_format = autoload("lsp-format")
-local lsp = autoload("lspconfig")
-local cmplsp = autoload("cmp_nvim_lsp")
-local function define_signs(prefix)
-  local error = (prefix .. "SignError")
-  local warn = (prefix .. "SignWarn")
-  local info = (prefix .. "SignInfo")
-  local hint = (prefix .. "SignHint")
-  vfn.sign_define(error, {text = "\239\129\151", texthl = error})
-  vfn.sign_define(warn, {text = "\239\129\177", texthl = warn})
-  vfn.sign_define(info, {text = "\239\129\154", texthl = info})
-  return vfn.sign_define(hint, {text = "\239\129\153", texthl = hint})
-end
-define_signs("Diagnostic")
-local function on_attach_fn(client, bufnr)
-  local tb = require("telescope.builtin")
-  local mappings
+local lsps = {"clojure_lsp", "fennel_language_server", "lua_ls", "jsonls", "yamlls", "marksman", "html", "basedpyright", "ts_ls", "terraformls", "tailwindcss", "dockerls", "docker_compose_language_service", "bashls", "taplo", "sqlls"}
+local filetype__3eformatters = {lua = {"stylua"}, sh = {"shfmt"}, python = {"ruff_organize_imports", "ruff_format"}, rust = {"rustfmt"}, clojure = {"cljfmt"}, javascript = {"prettierd"}, typescript = {"prettierd"}, jsx = {"prettierd"}, html = {"prettierd"}, css = {"prettierd"}, yaml = {"prettierd"}, markdown = {"prettierd"}, fennel = {"fnlfmt"}, sql = {"sqlfmt"}}
+local formatter__3epackage = {ruff_organize_imports = "ruff", ruff_format = "ruff"}
+local disable_formatter_on_save = {fennel = true, sql = true}
+local disable_formatter_auto_install = {fnlfmt = true, rustfmt = true}
+local function _1_(_, opts)
+  local conform = require("conform")
+  local registry = require("mason-registry")
+  local formatters_for_mason = {}
   local function _2_()
-    return vim.lsp.buf.code_action({range = {start = api.nvim_buf_get_mark(bufnr, "<"), ["end"] = api.nvim_buf_get_mark(bufnr, ">")}})
-  end
-  mappings = {{"n", "gd", vim.lsp.buf.definition}, {"n", "K", vim.lsp.buf.hover}, {"n", "<leader>ld", vim.lsp.buf.declaration}, {"n", "<leader>lt", vim.lsp.buf.type_definition}, {"n", "<leader>lh", vim.lsp.buf.signature_help}, {"n", "<leader>r", vim.lsp.buf.rename}, {"n", "<leader>lq", vim.diagnostic.setloclist}, {"n", "<leader>lf", vim.lsp.buf.format}, {"n", "<F3>", vim.diagnostic.goto_next}, {"n", "<F4>", vim.diagnostic.goto_prev}, {"n", "<leader>a", vim.lsp.buf.code_action}, {"v", "<leader>a", _2_}, {"n", "<leader>i", tb.lsp_implementations}, {"n", "<leader>r", tb.lsp_references}, {"n", "<leader>d", tb.diagnostics}}
-  for _, _3_ in ipairs(mappings) do
-    local mode = _3_[1]
-    local from = _3_[2]
-    local to = _3_[3]
-    vim.keymap.set(mode, from, to, {noremap = true, buffer = bufnr})
-  end
-  return lsp_format.on_attach(client)
-end
-local handlers = {["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {severity_sort = true, update_in_insert = true, underline = true, virtual_text = false}), ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {border = "single"}), ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {border = "single"})}
-local capabilities = cmplsp.default_capabilities()
-local function clj_setup()
-  local before_init
-  local function _4_(params)
-    params.workDoneToken = "1"
+    for _ft, formatters in pairs(filetype__3eformatters) do
+      for _idx, formatter in ipairs(formatters) do
+        if not disable_formatter_auto_install[formatter] then
+          formatters_for_mason[(formatter__3epackage[formatter] or formatter)] = true
+        else
+        end
+      end
+    end
+    for formatter, _true in pairs(formatters_for_mason) do
+      local pkg = registry.get_package(formatter)
+      if not pkg:is_installed() then
+        vim.notify(("Automatically installing " .. formatter .. " with Mason."))
+        pkg:install()
+      else
+      end
+    end
     return nil
   end
-  before_init = _4_
-  return lsp.clojure_lsp.setup({on_attach = on_attach_fn, handlers = handlers, before_init = before_init, capabilities = capabilities})
-end
-vim.diagnostic.config({virtual_text = true, severity_sort = true, float = {header = "", source = "always", border = "solid", focusable = true}, update_in_insert = false})
-local function lua_setup()
-  return lsp.lua_ls.setup({settings = {Lua = {diagnostics = {globals = {"vim"}}}}})
-end
-local function python_setup()
-  return lsp.pyright.setup({capabilities = capabilities})
-end
-local function php_setup()
-  return lsp.phpactor.setup({capabilities = capabilities, on_attach = on_attach_fn, handlers = handlers})
-end
-local function fennel_setup()
-  return lsp.fennel_ls.setup({["on-attach"] = on_attach_fn, capabilities = capabilities, handlers = handlers})
+  vim.schedule(_2_)
+  vim.g.dotfiles_format_on_save = true
+  conform.setup(opts)
+  vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+  return nil
 end
 local function _5_()
-  clj_setup()
-  lua_setup()
-  fennel_setup()
-  python_setup()
-  return php_setup()
+  if (nil == vim.b.dotfiles_format_on_save) then
+    vim.b.dotfiles_format_on_save = false
+  else
+    vim.b.dotfiles_format_on_save = not vim.b.dotfiles_format_on_save
+  end
+  return vim.notify(("Set vim.b.dotfiles_format_on_save to " .. tostring(vim.b.dotfiles_format_on_save)))
 end
-return {{"neovim/nvim-lspconfig", event = {"BufReadPost", "BufNewFile"}, cmd = {"LspInfo", "LspInstall", "LspUninstall"}, dependencies = {{"lukas-reineke/lsp-format.nvim", opts = {}}, {"williamboman/mason.nvim", opts = {}}, {"williamboman/mason-lspconfig.nvim", opts = {ensure_installed = {"clojure_lsp", "lua_ls"}}}}, config = _5_}}
+local function _7_()
+  vim.g.dotfiles_format_on_save = not vim.g.dotfiles_format_on_save
+  return vim.notify(("Set vim.g.dotfiles_format_on_save to " .. tostring(vim.g.dotfiles_format_on_save)))
+end
+local function _8_(_buf)
+  if (vim.g.dotfiles_format_on_save and ((nil == vim.b.dotfiles_format_on_save) or vim.b.dotfiles_format_on_save) and not disable_formatter_on_save[vim.bo.filetype]) then
+    return {timeout_ms = 500, lsp_format = "fallback"}
+  else
+    return nil
+  end
+end
+local function _10_()
+  local lspconfig = require("lspconfig")
+  local caps = require("cmp_nvim_lsp").default_capabilities()
+  local mlsp = require("mason-lspconfig")
+  local function _11_(server_name)
+    return require("lspconfig")[server_name].setup({capabilities = caps})
+  end
+  local function _12_()
+    return lspconfig.fennel_language_server.setup({capabilities = caps, root_dir = lspconfig.util.root_pattern("fnl"), single_file_support = true, settings = {fennel = {workspace = {library = vim.api.nvim_list_runtime_paths()}, diagnostics = {globals = {"vim"}}}}})
+  end
+  return mlsp.setup_handlers({_11_, fennel_language_server = _12_})
+end
+local function _13_()
+  return require("conform").format()
+end
+return {{"williamboman/mason.nvim", opts = {}}, {"stevearc/conform.nvim", config = _1_, dependencies = {"rcarriga/nvim-notify"}, keys = {{"<leader>tf", _5_, desc = "Toggle buffer formatting"}, {"<leader>tF", _7_, desc = "Toggle global formatting"}}, opts = {formatters_by_ft = filetype__3eformatters, format_on_save = _8_}}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = lsps, automatic_installation = true}}, {"neovim/nvim-lspconfig", config = _10_, dependencies = {"williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp", "stevearc/conform.nvim"}, keys = {{"<localleader>ld", "<CMD>Telescope lsp_definitions<CR>", desc = "LSP definition"}, {"<localleader>lu", "<CMD>Telescope lsp_implementations<CR>", desc = "LSP implementations"}, {"<localleader>lt", "<CMD>Telescope lsp_type_definitions<CR>", desc = "LSP type definitions"}, {"<localleader>lr", "<CMD>Telescope lsp_references<CR>", desc = "LSP references"}, {"<localleader>li", "<CMD>Telescope lsp_incoming_calls<CR>", desc = "LSP incoming calls"}, {"<localleader>lo", "<CMD>Telescope lsp_outgoing_calls<CR>", desc = "LSP outgoing calls"}, {"<localleader>ls", "<CMD>Telescope lsp_document_symbols<CR>", desc = "LSP document symbols"}, {"<localleader>lS", "<CMD>Telescope lsp_workspace_symbols<CR>", desc = "LSP workspace symbols"}, {"<localleader>lx", "<CMD>Telescope lsp_dynamic_workspace_symbols<CR>", desc = "LSP dynamic workspace symbols (all workspaces)"}, {"<localleader>laf", _13_, desc = "LSP format"}, {"<localleader>lar", vim.lsp.buf.rename, desc = "LSP rename"}}, lazy = false}, {"RubixDev/mason-update-all", cmd = "MasonUpdateAll", dependencies = {"williamboman/mason.nvim"}, main = "mason-update-all", opts = {}}}

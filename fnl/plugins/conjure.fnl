@@ -1,17 +1,6 @@
-(local {: autoload} (require :nfnl.module))
-(local conjure (autoload :conjure.main))
-(local mapping (autoload :conjure.mapping))
-(local {: assoc-opts} (autoload :utils.common))
+(import-macros {: tx} :config.macros)
 
-(fn setup [_ _opts]
-  (conjure.main)
-  (mapping.on-filetype))
+(set vim.g.conjure#filetype#fennel "conjure.client.fennel.nfnl")
+(set vim.g.conjure#mapping#doc_word "K")
 
-(local options
-  {:conjure#highlight#enabled true})
-
-[{1 :Olical/conjure
-  :dependencies [:PaterJason/cmp-conjure]
-  :ft [:clojure :fennel :lua :python]
-  :config setup
-  :init (assoc-opts vim.g options)}]
+(tx :Olical/conjure {:event "VeryLazy"})

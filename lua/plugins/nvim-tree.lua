@@ -2,4 +2,4 @@
 local function _1_()
   return vim.cmd("NvimTreeToggle")
 end
-return {{"nvim-tree/nvim-tree.lua", dependencies = {"nvim-web-devicons"}, opts = {update_focused_file = {enable = true, update_cwd = true}}, keys = {{"<F2>", _1_}}}}
+return {"nvim-tree/nvim-tree.lua", dependencies = {"nvim-tree/nvim-web-devicons"}, keys = {{"<F2>", _1_}}, opts = {update_focused_file = {enable = true, update_cwd = true}}}

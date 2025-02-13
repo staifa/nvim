@@ -1,3 +1,3 @@
 (import-macros {: tx} :config.macros)
 
-(tx "wellle/targets.vim")
+(tx "HiPhish/rainbow-delimiters.nvim")

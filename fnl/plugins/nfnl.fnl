@@ -1,3 +1,3 @@
 (import-macros {: tx} :config.macros)
 
-(tx "wellle/targets.vim")
+(tx "Olical/nfnl" {:ft "fennel"})

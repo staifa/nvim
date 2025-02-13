@@ -1,105 +1,140 @@
-(local {: autoload} (require :nfnl.module))
-(local api vim.api)
-(local vfn vim.fn)
-(local lsp-format (autoload :lsp-format))
-(local lsp (autoload :lspconfig))
-(local cmplsp (autoload :cmp_nvim_lsp))
+(import-macros {: tx} :config.macros)
 
-(fn define-signs [prefix]
-  ; "Symbols to show for lsp diagnostics."
-  (let [error (.. prefix :SignError)
-        warn  (.. prefix :SignWarn)
-        info  (.. prefix :SignInfo)
-        hint  (.. prefix :SignHint)]
-    (vfn.sign_define error {:text "" :texthl error})
-    (vfn.sign_define warn  {:text "" :texthl warn})
-    (vfn.sign_define info  {:text "" :texthl info})
-    (vfn.sign_define hint  {:text "" :texthl hint})))
+(local lsps
+  ["clojure_lsp"
+   "fennel_language_server"
+   "lua_ls"
+   "jsonls"
+   "yamlls"
+   "marksman"
+   "html"
+   "basedpyright"
+   "ts_ls"
+   "terraformls"
+   "tailwindcss"
+   "dockerls"
+   "docker_compose_language_service"
+   "bashls"
+   "taplo"
+   "sqlls"])
 
-(define-signs :Diagnostic)
+(local filetype->formatters
+  {:lua ["stylua"]
+   :sh ["shfmt"]
+   :python ["ruff_organize_imports" "ruff_format"]
+   :rust ["rustfmt"]
+   :clojure ["cljfmt"]
+   :javascript ["prettierd"]
+   :typescript ["prettierd"]
+   :jsx ["prettierd"]
+   :html ["prettierd"]
+   :css ["prettierd"]
+   :yaml ["prettierd"]
+   :markdown ["prettierd"]
+   :fennel ["fnlfmt"]
+   :sql ["sqlfmt"]})
 
-(fn on-attach-fn [client bufnr]
-  (let [tb (require :telescope.builtin)
-        mappings [[:n :gd vim.lsp.buf.definition]
-                  [:n :K vim.lsp.buf.hover]
-                  [:n :<leader>ld vim.lsp.buf.declaration]
-                  [:n :<leader>lt vim.lsp.buf.type_definition]
-                  [:n :<leader>lh vim.lsp.buf.signature_help]
-                  [:n :<leader>r vim.lsp.buf.rename]
-                  [:n :<leader>lq vim.diagnostic.setloclist]
-                  [:n :<leader>lf vim.lsp.buf.format]
-                  [:n :<F3> vim.diagnostic.goto_next]
-                  [:n :<F4> vim.diagnostic.goto_prev]
-                  [:n :<leader>a vim.lsp.buf.code_action]
-                  [:v :<leader>a #(vim.lsp.buf.code_action
-                                    {:range {:start (api.nvim_buf_get_mark bufnr "<")
-                                             :end (api.nvim_buf_get_mark bufnr ">")}})]
-                  [:n :<leader>i tb.lsp_implementations]
-                  [:n :<leader>r tb.lsp_references]
-                  [:n :<leader>d tb.diagnostics]]]
-    (each [_ [mode from to] (ipairs mappings)]
-      (vim.keymap.set mode from to {:noremap true :buffer bufnr}))
-    (lsp-format.on_attach client)))
+(local formatter->package
+  {"ruff_organize_imports" "ruff"
+   "ruff_format" "ruff"})
 
-(local handlers {:textDocument/publishDiagnostics
-                 (vim.lsp.with
-                   vim.lsp.diagnostic.on_publish_diagnostics
-                   {:severity_sort true
-                    :update_in_insert true
-                    :underline true
-                    :virtual_text false})
-                 :textDocument/hover
-                 (vim.lsp.with
-                   vim.lsp.handlers.hover
-                   {:border :single})
-                 :textDocument/signatureHelp
-                 (vim.lsp.with
-                   vim.lsp.handlers.signature_help
-                   {:border :single})})
+(local disable-formatter-on-save
+  ;; These mess with the buffer, so we keep them available for manual invocation but never automatic.
+  {:fennel true
+   :sql true})
 
-(local capabilities (cmplsp.default_capabilities))
+(local disable-formatter-auto-install
+  ;; These need to be installed outside of Mason.
+  {:fnlfmt true
+   :rustfmt true})
 
-(fn clj-setup []
-  (let [before_init (fn [params]
-                      (set params.workDoneToken :1))]
-    (lsp.clojure_lsp.setup {:on_attach on-attach-fn
-                            :handlers handlers
-                            :before_init before_init
-                            :capabilities capabilities})))
+[(tx "williamboman/mason.nvim"
+   {:opts {}})
 
-;; global diagnostics setting
-(vim.diagnostic.config {:virtual_text true
-                        :severity_sort true
-                        :update_in_insert false
-                        :float {:header ""
-                                :source :always
-                                :border :solid
-                                :focusable true}})
+ (tx "stevearc/conform.nvim"
+   {:dependencies ["rcarriga/nvim-notify"]
+    :opts {:formatters_by_ft filetype->formatters
+           :format_on_save
+           (fn [_buf]
+             (when (and vim.g.dotfiles_format_on_save (or (= nil vim.b.dotfiles_format_on_save) vim.b.dotfiles_format_on_save)
+                        (not (. disable-formatter-on-save vim.bo.filetype)))
+               {:timeout_ms 500
+                :lsp_format "fallback"}))}
 
-(fn lua-setup []
-  (lsp.lua_ls.setup {:settings {:Lua {:diagnostics {:globals [:vim]}}}}))
+    :config (fn [_ opts]
+              (let [conform (require :conform)
+                    registry (require :mason-registry)
+                    formatters-for-mason {}]
 
-(fn python-setup []
-  (lsp.pyright.setup {:capabilities capabilities}))
+                (vim.schedule
+                  (fn []
+                    (each [_ft formatters (pairs filetype->formatters)]
+                      (each [_idx formatter (ipairs formatters)]
+                        (when (not (. disable-formatter-auto-install formatter))
+                          (tset formatters-for-mason (or (. formatter->package formatter) formatter) true))))
 
-(fn php-setup []
-  (lsp.phpactor.setup {:capabilities capabilities
-                       :on_attach on-attach-fn
-                       :handlers handlers}))
+                    (each [formatter _true (pairs formatters-for-mason)]
+                      (let [pkg (registry.get_package formatter)]
+                        (when (not (pkg:is_installed))
+                          (vim.notify (.. "Automatically installing " formatter " with Mason."))
+                          (pkg:install))))))
 
-(fn fennel-setup []
-  (lsp.fennel_ls.setup {:on-attach on-attach-fn
-                        :capabilities capabilities
-                        :handlers handlers}))
+                (set vim.g.dotfiles_format_on_save true)
+                (conform.setup opts)
+                (set vim.o.formatexpr "v:lua.require'conform'.formatexpr()")))
 
-[{1 :neovim/nvim-lspconfig
-  :event [:BufReadPost :BufNewFile]
-  :cmd [:LspInfo :LspInstall :LspUninstall]
-  :dependencies [{1 :lukas-reineke/lsp-format.nvim
-                  :opts {}}
-                 {1 :williamboman/mason.nvim
-                  :opts {}}
-                 {1 :williamboman/mason-lspconfig.nvim
-                  :opts {:ensure_installed [:clojure_lsp
-                                            :lua_ls]}}]
-  :config #(do (clj-setup) (lua-setup) (fennel-setup) (python-setup) (php-setup))}]
+    :keys [(tx "<leader>tf" (fn []
+                              (set vim.b.dotfiles_format_on_save
+                                   (if (= nil vim.b.dotfiles_format_on_save)
+                                     false
+                                     (not vim.b.dotfiles_format_on_save)))
+                              (vim.notify (.. "Set vim.b.dotfiles_format_on_save to " (tostring vim.b.dotfiles_format_on_save))))
+               {:desc "Toggle buffer formatting"})
+           (tx "<leader>tF" (fn []
+                              (set vim.g.dotfiles_format_on_save (not vim.g.dotfiles_format_on_save))
+                              (vim.notify (.. "Set vim.g.dotfiles_format_on_save to " (tostring vim.g.dotfiles_format_on_save))))
+               {:desc "Toggle global formatting"})]})
+
+ (tx "williamboman/mason-lspconfig.nvim"
+   {:dependencies ["williamboman/mason.nvim"]
+    :opts {:ensure_installed lsps
+           :automatic_installation true}})
+
+ (tx "neovim/nvim-lspconfig"
+   {:lazy false
+    :dependencies ["williamboman/mason-lspconfig.nvim" "hrsh7th/cmp-nvim-lsp" "stevearc/conform.nvim"]
+    :keys [(tx "<localleader>ld" "<CMD>Telescope lsp_definitions<CR>" {:desc "LSP definition"})
+           (tx "<localleader>lu" "<CMD>Telescope lsp_implementations<CR>" {:desc "LSP implementations"})
+           (tx "<localleader>lt" "<CMD>Telescope lsp_type_definitions<CR>" {:desc "LSP type definitions"})
+           (tx "<localleader>lr" "<CMD>Telescope lsp_references<CR>" {:desc "LSP references"})
+           (tx "<localleader>li" "<CMD>Telescope lsp_incoming_calls<CR>" {:desc "LSP incoming calls"})
+           (tx "<localleader>lo" "<CMD>Telescope lsp_outgoing_calls<CR>" {:desc "LSP outgoing calls"})
+           (tx "<localleader>ls" "<CMD>Telescope lsp_document_symbols<CR>" {:desc "LSP document symbols"})
+           (tx "<localleader>lS" "<CMD>Telescope lsp_workspace_symbols<CR>" {:desc "LSP workspace symbols"})
+           (tx "<localleader>lx" "<CMD>Telescope lsp_dynamic_workspace_symbols<CR>" {:desc "LSP dynamic workspace symbols (all workspaces)"})
+           (tx "<localleader>laf" (fn [] ((. (require :conform) :format))) {:desc "LSP format"})
+           (tx "<localleader>lar" vim.lsp.buf.rename {:desc "LSP rename"})]
+    :config
+    (fn []
+      (let [lspconfig (require :lspconfig)
+            caps ((. (require :cmp_nvim_lsp) :default_capabilities))
+            mlsp (require :mason-lspconfig)]
+        (mlsp.setup_handlers
+          (tx (fn [server-name]
+                ((. (require :lspconfig) server-name :setup)
+                 {:capabilities caps}))
+
+              {:fennel_language_server
+               (fn []
+                 ((. lspconfig :fennel_language_server :setup)
+                  {:capabilities caps
+                   :root_dir (lspconfig.util.root_pattern "fnl")
+                   :single_file_support true
+                   :settings {:fennel {:workspace {:library (vim.api.nvim_list_runtime_paths)}
+                   :diagnostics {:globals [:vim]}}}}))}))))})
+
+ (tx "RubixDev/mason-update-all"
+   {:cmd "MasonUpdateAll"
+    :dependencies ["williamboman/mason.nvim"]
+    :main "mason-update-all"
+    :opts {}})]
