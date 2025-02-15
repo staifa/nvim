@@ -12,10 +12,23 @@
              "--with-filename" "--line-number" "--column"
              "--smart-case" "--hidden" "--glob=!.git/"]
             :layout_strategy "horizontal"
-            :layout_config {:horizontal {:preview_width 0.5}}}}
+            :layout_config {:horizontal {:preview_width 0.6}}}}
    :config (fn [_ opts]
-             (let [telescope (require :telescope)]
-               (telescope.setup opts)
+             (let [telescope (require :telescope)
+                   actions (require :telescope.actions)
+                   action-state (require :telescope.actions.state)]
+               (telescope.setup
+                 (vim.tbl_deep_extend "force" opts
+                   {:defaults
+                    {:mappings
+                     {:i
+                      {"<C-x>" (fn [prompt_bufnr]
+                                 (local entry (action-state.get_selected_entry))
+                                 (local bufnr (tonumber (or entry.bufnr 0)))
+                                 (when (> bufnr 0)
+                                   (vim.api.nvim_buf_delete bufnr {:force true}))
+                                 (actions._close prompt_bufnr)
+                                 ((. (require :telescope.builtin) :buffers)))}}}}))
                (telescope.load_extension :fzf)
                (telescope.load_extension :undo)))
    :cmd "Telescope"

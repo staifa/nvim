@@ -1,5 +1,7 @@
 ;; global key mappings
 (let [mappings [[:gx #(vim.cmd :bd) "Close buffer"]
+                [:gn #(vim.cmd :bn) "Next buffer"]
+                [:gp #(vim.cmd :bp) "Previous buffer"]
                 [:gX #(vim.cmd :%bd|e#|bd#) "Close all buffers except the current one"]
                 [:<Backspace> #(vim.cmd :noh) "Clear highlights"]
                 [:<space> "a<space><Esc>" "Insert space in normal mode"]
