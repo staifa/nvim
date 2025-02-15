@@ -131,7 +131,7 @@
                    :root_dir (lspconfig.util.root_pattern "fnl")
                    :single_file_support true
                    :settings {:fennel {:workspace {:library (vim.api.nvim_list_runtime_paths)}
-                   :diagnostics {:globals [:vim]}}}}))}))))})
+                                       :diagnostics {:globals [:vim]}}}}))}))))})
 
  (tx "RubixDev/mason-update-all"
    {:cmd "MasonUpdateAll"
