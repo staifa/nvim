@@ -1,7 +1,7 @@
 (import-macros {: tx} :config.macros)
 
 (tx "olimorris/codecompanion.nvim"
-  {:event "VeryLazy"
+  {:event "BufReadPost"
    :main "codecompanion"
    :dependencies ["nvim-lua/plenary.nvim" "nvim-treesitter/nvim-treesitter"]
    :keys [(tx "<localleader>fa" "<CMD>Telescope codecompanion<CR>" {:desc "Find AI actions"})
