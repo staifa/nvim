@@ -18,11 +18,9 @@
            lspkind (require :lspkind)]
        (cmp.setup
          {:sources (cmp.config.sources
-                     [{:name "copilot" :group_index 2}
-                      {:name "nvim_lsp" :group_index 2}
+                     [{:name "nvim_lsp" :group_index 2}
                       {:name "conjure" :group_index 2}
-                      {:name "buffer" :group_index 2}
-                      {:name "luasnip" :group_index 2}])
+                      {:name "buffer" :group_index 2}])
           :sorting {:priority_weight 2
                     :comparators [;; Below is the default comparator list and order for nvim-cmp
                                   cmp.config.compare.offset
@@ -39,14 +37,17 @@
                                                     :ellipsis_char "..."
                                                     :show_labelDetails true
                                                     :maxwidth {:menu 50
-                                                                           :abbr 50}})}
+                                                               :abbr 50}
+                                                    :before (fn [_entry vim_item]
+                                                              vim_item)})}
+          :window {:completion (cmp.config.window.bordered {:winhighlight "Normal:Pmenu,FloatBorder:FloatBorder"})
+                   :documentation (cmp.config.window.bordered {:winhighlight "Normal:Pmenu,FloatBorder:FloatBorder"})}
           :mapping (cmp.mapping.preset.insert
                      {"<C-b>" (cmp.mapping.scroll_docs -4)
                       "<C-f>" (cmp.mapping.scroll_docs 4)
                       "<C-Space>" (cmp.mapping.complete)
                       "<C-e>" (cmp.mapping.abort)
                       "<CR>" (cmp.mapping.confirm {:select false})})})
-
        (cmp.setup.cmdline
          ":"
          {:mapping (cmp.mapping.preset.cmdline)

@@ -2,7 +2,7 @@
 
 (local lsps
   ["clojure_lsp"
-   "fennel_language_server"
+   ; "fennel_language_server"
    "lua_ls"
    "jsonls"
    "yamlls"
@@ -11,7 +11,6 @@
    "basedpyright"
    "ts_ls"
    "terraformls"
-   "tailwindcss"
    "dockerls"
    "docker_compose_language_service"
    "bashls"
@@ -31,7 +30,7 @@
    :css ["prettierd"]
    :yaml ["prettierd"]
    :markdown ["prettierd"]
-   :fennel ["fnlfmt"]
+   ; :fennel ["fnlfmt"]
    :sql ["sqlfmt"]})
 
 (local formatter->package
@@ -97,6 +96,7 @@
 
  (tx "williamboman/mason-lspconfig.nvim"
    {:dependencies ["williamboman/mason.nvim"]
+    :version "*"
     :opts {:ensure_installed lsps
            :automatic_installation true}})
 
@@ -113,25 +113,41 @@
            (tx "<localleader>lS" "<CMD>Telescope lsp_workspace_symbols<CR>" {:desc "LSP workspace symbols"})
            (tx "<localleader>lx" "<CMD>Telescope lsp_dynamic_workspace_symbols<CR>" {:desc "LSP dynamic workspace symbols (all workspaces)"})
            (tx "<localleader>laf" (fn [] ((. (require :conform) :format))) {:desc "LSP format"})
-           (tx "<localleader>lar" vim.lsp.buf.rename {:desc "LSP rename"})]
+           (tx "<localleader>lar" vim.lsp.buf.rename {:desc "LSP rename"})
+           (tx "<localleader>w"
+               (fn []
+                 ((. vim.diagnostic :goto_next) {:severity {:min vim.diagnostic.severity.WARN}}))
+               {:desc "Go to next warning/error"})
+           (tx "<localleader>q"
+               (fn []
+                 ((. vim.diagnostic :goto_prev) {:severity {:min vim.diagnostic.severity.WARN}}))
+               {:desc "Go to previous warning/error"})
+           (tx "<C-a>" vim.lsp.buf.code_action {:desc "LSP code actions"})
+           (tx "<C-a>" vim.lsp.buf.code_action {:desc "LSP code actions" :mode ["n" "v"]})]
     :config
     (fn []
-      (let [lspconfig (require :lspconfig)
-            caps ((. (require :cmp_nvim_lsp) :default_capabilities))
-            mlsp (require :mason-lspconfig)]
-        (mlsp.setup_handlers
-          (tx (fn [server-name]
-                ((. (require :lspconfig) server-name :setup)
-                 {:capabilities caps}))
+     (let [lspconfig (require :lspconfig)
+           configs (require :lspconfig.configs)
+           caps ((. (require :cmp_nvim_lsp) :default_capabilities))
+           mlsp (require :mason-lspconfig)]
 
-              {:fennel_language_server
-               (fn []
-                 ((. lspconfig :fennel_language_server :setup)
-                  {:capabilities caps
-                   :root_dir (lspconfig.util.root_pattern "fnl")
-                   :single_file_support true
-                   :settings {:fennel {:workspace {:library (vim.api.nvim_list_runtime_paths)}
-                   :diagnostics {:globals [:vim]}}}}))}))))})
+       (mlsp.setup {:ensure_installed lsps :automatic_installation true})
+
+       ;; Fennel language server
+       (when (not configs.fennel_language_server)
+         (set configs.fennel_language_server
+              {:default_config
+               {:cmd ["fennel-ls"]
+                :filetypes ["fennel"]
+                :root_dir ((. lspconfig.util :root_pattern) "fnl")
+                :single_file_support true}}))))})
+
+       ; ((. lspconfig :fennel_language_server :setup)
+       ;  {:capabilities caps
+       ;   :root_dir ((. lspconfig.util :root_pattern) "fnl")
+       ;   :single_file_support true
+       ;   :settings {:fennel {:workspace {:library (vim.api.nvim_list_runtime_paths)}
+       ;                       :diagnostics {:globals [:vim :tx]}}}})))})
 
  (tx "RubixDev/mason-update-all"
    {:cmd "MasonUpdateAll"

@@ -7,6 +7,7 @@
                (wk.add
                  [(tx "<localleader>a" {:group "AI"})
                   (tx "<localleader>b" {:group "Buffer"})
+                  (tx "<localleader>e" {:group "Eval"})
                   (tx "<localleader>f" {:group "Find"})
                   (tx "<localleader>l" {:group "LSP"})
                   (tx "<localleader>la" {:group "LSP actions"})
